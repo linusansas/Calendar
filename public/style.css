@@ -1,0 +1,78 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+.weekdays{
+    border: 5px solid red;
+    height: 5rem;
+}
+
+.calender{
+    border: 5px solid red;
+    height: 80vh;
+    margin-top: 1rem;
+    display: flex;
+}
+
+.week-number{
+    border: 2px solid red;
+    flex: 1;
+}
+
+.grid{
+    border: 2px solid red;
+    flex: 15;
+}
+
+/*//week-number
+//grid*/
+  
+    header {
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    height: 4rem;
+  }
+  
+  .container {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+  }
+  
+  .sidebar {
+    flex: 2;
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .main-content {
+    flex: 5;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .right-area {
+    flex: 2;
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+  
+    .main-content {
+      flex: 1;
+    }
+  }
