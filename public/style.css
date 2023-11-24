@@ -178,7 +178,8 @@ Buttons
 .btn-delete:active {
   box-shadow: none;
 }
-.btn-clock {
+.btn-clock,
+.btn-currentDay {
   background: transparent;
   border: none;
   color: var(--color-primary-2);
@@ -188,7 +189,10 @@ Buttons
 .btn-clock:hover {
   border: none;
 }
-
+.btn-currentDay {
+  font-size: 1.5rem;
+  letter-spacing: 0;
+}
 /*
 =============== 
 Input Form
@@ -279,7 +283,7 @@ Small Screens
     margin-left: 1.5rem;
   }
   .btn-currentDay {
-    padding: 0.2rem 1rem;
-    font-size: 1.2rem;
+    padding: 0.2rem;
+    font-size: 1rem;
   }
 }

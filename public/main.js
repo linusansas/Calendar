@@ -2,7 +2,11 @@ window.addEventListener("DOMContentLoaded", main);
 
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
+let currentDay = new Date();
+
 function main() {
+  getDayName();
+  updateCurrentTime();
   createCalendar(currentYear, currentMonth);
 }
 
@@ -13,11 +17,7 @@ function createCalendar(year, month) {
   const daysGrid = document.querySelector(".grid-days");
 
   const firstDay = new Date(year, month, 0);
-  const lastDay = new Date(year, month - 1, 0);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-  const currentTimeElement = document.querySelector(".btn-clock");
-  updateCurrentTime(currentTimeElement);
 
   const firstDayIndex = firstDay.getDay();
 
@@ -35,6 +35,7 @@ function createCalendar(year, month) {
     "November",
     "December",
   ];
+
   monthName.textContent = `${monthNames[month]} ${year}`;
   daysGrid.innerHTML = "";
   nextBtn.onclick = nextMonth;
@@ -62,6 +63,9 @@ function createCalendar(year, month) {
   }
 }
 
+/**
+ * Updates the calendar to reflect the current month and year.
+ */
 function updateCalendar() {
   createCalendar(currentYear, currentMonth);
 }
@@ -82,14 +86,34 @@ function prevMonth() {
   updateCalendar();
 }
 
-function updateCurrentTime(element) {
-  const now = new Date();
-  const hours = now.getHours().toString().padStart(2, "0");
-  const minutes = now.getMinutes().toString().padStart(2, "0");
+/**
+ * Updates the current time display and run every second.
+ */
+function updateCurrentTime() {
+  const currentTimeElement = document.querySelector(".btn-clock");
+  const hours = currentDay.getHours().toString().padStart(2, "0");
+  const minutes = currentDay.getMinutes().toString().padStart(2, "0");
   const timeString = `${hours}:${minutes}`;
 
-  element.textContent = timeString;
+  currentTimeElement.textContent = timeString;
 
-  // Optionally, update the time every second
-  setTimeout(() => updateCurrentTime(element), 1000);
+  setTimeout(() => updateCurrentTime(), 1000);
+}
+
+/**
+ * Updates the element displaying the current day name.
+ * Uses the options to format the date string.
+ */
+function getDayName() {
+  const currentDayName = document.getElementById("current-day");
+  const options = {
+    weekday: "long",
+    // day: "numeric",
+    // month: "long",
+    // year: "numeric",
+  };
+
+  const currentDayString = currentDay.toLocaleDateString("en-US", options);
+  currentDayName.textContent = currentDayString;
+  console.log(currentDayString);
 }
