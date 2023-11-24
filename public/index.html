@@ -4,30 +4,71 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css">
     <title>Calendar</title>
-    <script src="main.js"></script>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Bad+Script&family=Dawning+of+a+New+Day&family=Great+Vibes&family=Lato:wght@300;400&family=Merriweather+Sans&family=Montserrat:wght@100;400&family=Roboto+Condensed:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+    <!-- font-awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <header>
-      <div>Header Left</div>
-      <div>Header Center</div>
-      <div>Header Right</div>
+      <div class="header-center">
+        <div class="btn btn-currentDay">Today</div>
+        <div class="month-container">
+          <div class="arrow-left">
+            <i id="previous-btn" class="fa-solid fa-chevron-left"></i>
+          </div>
+          <h1 class="month-name">December 2023</h1>
+          <div class="arrow-right">
+            <i id="next-btn" class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
+        <div class="btn btn-clock">16:30</div>
+      </div>
     </header>
-  
+
     <div class="container">
-      <aside class="sidebar">Left Sidebar</aside>
+      <aside class="sidebar">
+        <div class="container-info"></div>
+      </aside>
       <main class="main-content">
-        <div class="weekdays"></div>        
-        <div class="calender">
+        <div class="weekdays">
+          <div>MON</div>
+          <div>TUE</div>
+          <div>WED</div>
+          <div>THU</div>
+          <div>FRI</div>
+          <div>SAT</div>
+          <div>SUN</div>
+        </div>
+        <div class="calendar">
           <div class="week-number"></div>
-          <div class="grid"></div>
-        </div>        
+          <div class="grid-days"></div>
+        </div>
       </main>
-      <div class="right-area">Right Area</div>
+      <div class="right-area">
+        <div class="img-container">
+          <img src="./images/winter-img.jpeg" alt="" />
+        </div>
+        <div class="input-form">
+          <input type="text" placeholder="Title" />
+          <input type="text" placeholder="Time" />
+          <textarea name="text" cols="4" rows="3"></textarea>
+          <button type="submit" class="btn btn-submit">Save</button>
+          <button type="submit" class="btn btn-delete">Delete</button>
+        </div>
+      </div>
     </div>
-  
-  </body>
-  </html>
+    <script src="main.js"></script>
   </body>
 </html>
