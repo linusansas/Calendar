@@ -108,9 +108,9 @@ function getDayName() {
   const currentDayName = document.getElementById("current-day");
   const options = {
     weekday: "long",
-    // day: "numeric",
-    // month: "long",
-    // year: "numeric",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
   };
 
   const currentDayString = currentDay.toLocaleDateString("en-US", options);
