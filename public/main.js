@@ -15,11 +15,13 @@ function createCalendar(year, month) {
   const previousBtn = document.getElementById("previous-btn");
   const nextBtn = document.getElementById("next-btn");
   const daysGrid = document.querySelector(".grid-days");
+  const imageElement = document.querySelector(".month-img");
 
-  const firstDay = new Date(year, month, 0);
+  const firstDay = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  const firstDayIndex = firstDay.getDay();
+  // Adjusting the starting index to make Monday the first day of the week
+  let firstDayIndex = (firstDay.getDay() + 6) % 7;
 
   const monthNames = [
     "January",
@@ -36,14 +38,17 @@ function createCalendar(year, month) {
     "December",
   ];
 
+  changeMonthImage(imageElement, month);
+
   monthName.textContent = `${monthNames[month]} ${year}`;
   daysGrid.innerHTML = "";
   nextBtn.onclick = nextMonth;
   previousBtn.onclick = prevMonth;
 
+  //add empty div elements to represent the days of the previous month
   for (let i = 0; i < firstDayIndex; i++) {
     const dayElement = document.createElement("div");
-    dayElement.className = "day";
+    dayElement.className = "empty-day";
     daysGrid.appendChild(dayElement);
   }
 
@@ -90,12 +95,15 @@ function prevMonth() {
  * Updates the current time display and run every second.
  */
 function updateCurrentTime() {
+  const currentDate = new Date();
   const currentTimeElement = document.querySelector(".btn-clock");
-  const hours = currentDay.getHours().toString().padStart(2, "0");
-  const minutes = currentDay.getMinutes().toString().padStart(2, "0");
-  const timeString = `${hours}:${minutes}`;
+  const hours = currentDate.getHours().toString().padStart(2, "0");
+  const minutes = currentDate.getMinutes().toString().padStart(2, "0");
+  const seconds = currentDate.getSeconds().toString().padStart(2, "0");
+  const timeString = `${hours}:${minutes}:${seconds}`;
 
   currentTimeElement.textContent = timeString;
+  // console.log(currentDate.getSeconds());
 
   setTimeout(() => updateCurrentTime(), 1000);
 }
@@ -110,10 +118,32 @@ function getDayName() {
     weekday: "long",
     day: "numeric",
     month: "long",
-    year: "numeric",
+    // year: "numeric",
   };
-
   const currentDayString = currentDay.toLocaleDateString("en-US", options);
   currentDayName.textContent = currentDayString;
-  console.log(currentDayString);
+}
+/**
+ * change the calendar image depending on the month
+ * @param {*} imageElement
+ * @param {*} month
+ */
+function changeMonthImage(imageElement, month) {
+  const monthImg = [
+    "./images/january-img.png",
+    "./images/february-img.jpeg",
+    "./images/march-img.webp",
+    "./images/april-img.jpeg",
+    "./images/may-img.webp",
+    "./images/june-img.jpeg",
+    "./images/july-img.jpeg",
+    "./images/august-img.jpeg",
+    "./images/september-img.jpeg",
+    "./images/october-img.jpeg",
+    "./images/november-img.jpeg",
+    "./images/december-img.jpeg",
+  ];
+
+  const indexImg = month;
+  imageElement.setAttribute("src", monthImg[indexImg]);
 }
