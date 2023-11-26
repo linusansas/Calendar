@@ -11,7 +11,7 @@
   --color-primary-3: #e5e6f3;
   --color-white: #ffffff;
   --border-radius: 5px;
-  --transition: all 0.4s ease-in-out;
+  --transition: all 0.3s ease-in-out;
   --letter-spacing: 0.2rem;
   --font-family-1: "Raleway", sans-serif;
   --font-family-2: "Lato", sans-serif;
@@ -26,7 +26,7 @@ body {
   letter-spacing: var(--letter-spacing);
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   background: -webkit-linear-gradient(to top, #f8cdda, #1d2b64);
   background: linear-gradient(to top, #f8cdda, #1d2b64);
 }
@@ -74,7 +74,6 @@ Container
 .container {
   display: flex;
   padding: 0;
-  height: calc(100vh - 6rem);
 }
 
 /*
@@ -100,7 +99,7 @@ Sidebar
   text-align: center;
   font-family: var(--font-family-2);
   letter-spacing: 0;
-  height: 50%;
+  height: 350px;
   width: 100%;
   margin: 1.5rem 1rem;
 }
@@ -114,7 +113,7 @@ Sidebar
   width: 50%;
   top: 80%;
   box-shadow: 0px 13px 10px black;
-  rotate: 5deg;
+  transform: rotate(5deg);
 }
 
 /*
@@ -159,7 +158,7 @@ Calendar Section
   padding: 10px;
   text-align: center;
   border-radius: 0.2rem;
-  transform: var(--transition);
+  transition: var(--transition);
   box-shadow: 2px 2px 2px 2px rgba(255, 255, 255, 0.2);
 }
 .day:hover {
@@ -262,13 +261,13 @@ input::placeholder {
   color: var(--color-primary-1);
 }
 textarea {
-  height: 10rem;
+  max-height: 10rem;
 }
 
 .img-container {
-  height: 25%;
+  height: 180px;
   margin: 1rem auto;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   border-radius: var(--border-radius);
 }
 .img-container img {
@@ -295,7 +294,7 @@ Small Screens
     display: none;
   }
   .input-form {
-    width: 95%vw;
+    max-width: 450px;
   }
   .btn-clock {
     display: none;
@@ -308,14 +307,12 @@ Small Screens
   .month-name {
     font-size: 1.5rem;
   }
-  .btn-submit {
-    margin-right: 1.5rem;
-  }
-  .btn-delete {
-    margin-left: 1.5rem;
-  }
+
   .btn-currentDay {
     padding: 0.2rem;
     font-size: 1rem;
+  }
+  textarea {
+    height: 120px;
   }
 }

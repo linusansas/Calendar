@@ -123,6 +123,9 @@ function getDayName() {
   const currentDayString = currentDay.toLocaleDateString("en-US", options);
   currentDayName.textContent = currentDayString;
 }
+
+function markWeekendDays() {}
+
 /**
  * change the calendar image depending on the month
  * @param {*} imageElement
