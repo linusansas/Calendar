@@ -6,7 +6,7 @@ let currentDay = new Date();
 
 function main() {
   getDayName();
-  updateCurrentTime();
+  startClock();
   createCalendar(currentYear, currentMonth);
 }
 
@@ -94,7 +94,13 @@ function prevMonth() {
 /**
  * Updates the current time display and run every second.
  */
-function updateCurrentTime() {
+function startClock() {
+  // console.log(currentDate.getSeconds());
+  setInterval(tick, 1000);
+}
+
+function tick() {
+  getDayName();
   const currentDate = new Date();
   const currentTimeElement = document.querySelector(".btn-clock");
   const hours = currentDate.getHours().toString().padStart(2, "0");
@@ -103,9 +109,6 @@ function updateCurrentTime() {
   const timeString = `${hours}:${minutes}:${seconds}`;
 
   currentTimeElement.textContent = timeString;
-  // console.log(currentDate.getSeconds());
-
-  setTimeout(() => updateCurrentTime(), 1000);
 }
 
 /**
@@ -113,14 +116,15 @@ function updateCurrentTime() {
  * Uses the options to format the date string.
  */
 function getDayName() {
+  const currentDate = new Date();
   const currentDayName = document.getElementById("current-day");
   const options = {
     weekday: "long",
     day: "numeric",
     month: "long",
-    // year: "numeric",
+    year: "numeric",
   };
-  const currentDayString = currentDay.toLocaleDateString("en-US", options);
+  const currentDayString = currentDate.toLocaleDateString("en-US", options);
   currentDayName.textContent = currentDayString;
 }
 

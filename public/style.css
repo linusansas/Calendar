@@ -201,7 +201,7 @@ Buttons
 .btn-delete {
   font-family: var(--font-family-1);
   cursor: pointer;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
   margin: 0.5rem;
   width: 100px;
 }
@@ -275,6 +275,7 @@ textarea {
   height: 100%;
   border-radius: var(--border-radius);
   object-fit: cover;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 /*
@@ -300,19 +301,25 @@ Small Screens
     display: none;
   }
   .header-center {
-    padding: 5px;
     width: 95%;
   }
 
   .month-name {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 
   .btn-currentDay {
-    padding: 0.2rem;
     font-size: 1rem;
   }
   textarea {
     height: 120px;
+  }
+
+  #previous-btn,
+  #next-btn {
+    font-size: 1rem;
+  }
+  .weekdays {
+    font-size: 0.8rem;
   }
 }
