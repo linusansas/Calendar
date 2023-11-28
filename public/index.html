@@ -4,30 +4,80 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css">
     <title>Calendar</title>
-    <script src="main.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Bad+Script&family=Cinzel+Decorative:wght@400;700;900&family=Dawning+of+a+New+Day&family=Great+Vibes&family=Irish+Grover&family=Lato:wght@300;400&family=Merriweather&family=Merriweather+Sans&family=Montserrat:wght@100;300;400&family=Pirata+One&family=Poppins:wght@100;300;400;700;900&family=Raleway:wght@400;700&family=Roboto+Condensed:wght@300;400&family=Roboto:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- font-awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="./main.js"></script>
+    <script src="./calendar.js"></script>
+    <script src="./welcome-segment.js"></script>
   </head>
   <body>
     <header>
-      <div>Header Left</div>
-      <div>Header Center</div>
-      <div>Header Right</div>
+      <div class="header-center" data-cy="welcome-segment">
+        <div id="current-day" class="btn btn-currentDay"><!-- JS --></div>
+        <h1 class="month-name"><!-- JS --></h1>
+        <!-- <div class="month-container"> -->
+        <div class="arrows-container">
+          <div class="arrow-left" data-cy="prev-month">
+            <i id="previous-btn" class="fa-solid fa-chevron-left"></i>
+          </div>
+          <div class="arrow-right" data-cy="next-month">
+            <i id="next-btn" class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
+        <!-- </div> -->
+        <div class="btn btn-clock"><!-- JS --></div>
+      </div>
     </header>
-  
+
     <div class="container">
-      <aside class="sidebar">Left Sidebar</aside>
+      <aside class="sidebar">
+        <!-- <div class="container-info">
+          <h3>Today's Activities</h3>
+        </div> -->
+      </aside>
       <main class="main-content">
-        <div class="weekdays"></div>        
-        <div class="calender">
+        <div class="weekdays">
+          <div>MON</div>
+          <div>TUE</div>
+          <div>WED</div>
+          <div>THU</div>
+          <div>FRI</div>
+          <div>SAT</div>
+          <div>SUN</div>
+        </div>
+        <div class="calendar" data-cy="calendar-body">
           <div class="week-number"></div>
-          <div class="grid"></div>
-        </div>        
+          <div class="grid-days"></div>
+        </div>
       </main>
-      <div class="right-area">Right Area</div>
+      <div class="right-area">
+        <!-- <div class="img-container">
+          <img class="month-img" src="" alt="month-image" />
+        </div>
+        <div class="input-form">
+          <input type="text" placeholder="Date" />
+          <input type="text" placeholder="Time" />
+          <input type="text" placeholder="Title" />
+          <textarea name="text" cols="4" rows="3"></textarea>
+          <button type="submit" class="btn btn-submit">Save</button>
+          <button type="submit" class="btn btn-delete">Delete</button>
+        </div> -->
+      </div>
     </div>
-  
-  </body>
-  </html>
   </body>
 </html>
