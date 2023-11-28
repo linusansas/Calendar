@@ -24,13 +24,14 @@
     <script src="./main.js"></script>
     <script src="./calender.js"></script>
     <script src="./welcome-segment.js"></script>
+    <script src="./todo.js"></script>
   </head>
   <body>
     <header>
       <div class="header-center" data-cy="welcome-segment">
         <div id="current-day" class="btn btn-currentDay"><!-- JS --></div>
         <h1 class="month-name"><!-- JS --></h1>
-          <div class="month-container"> 
+          <!--<div class="month-container">--> 
         <div class="arrows-container">
           <div class="arrow-left" data-cy="prev-month">
             <i id="previous-btn" class="fa-solid fa-chevron-left"></i>
@@ -46,8 +47,11 @@
 
     <div class="container">
       <aside class="sidebar">
-        <div class="container-info">
-          <h3>Today's Activities</h3>
+        <div class="container-info" data-cy="todo-list">
+          <h3>Today's activities</h3>
+          <br>
+          <ul id="storedItemList">
+          </ul>
         </div> 
       </aside>
       <main class="main-content">
@@ -71,12 +75,12 @@
           <img class="month-img" src="" alt="month-image" />
         </div>
         <div class="input-form">
-          <input type="text" placeholder="Date" />
-          <input type="text" placeholder="Time" />
-          <input type="text" placeholder="Title" />
-          <textarea name="text" cols="4" rows="3"></textarea>
-          <button type="submit" class="btn btn-submit">Save</button>
-          <button type="submit" class="btn btn-delete">Delete</button>
+          <input type="text" placeholder="Date" id="dateInputField" data-cy="todo-date-input"/>
+          <input type="text" placeholder="Time" id="timeInputField"/>
+          <input type="text" placeholder="Title" id="titleInputField" data-cy="todo-title-input"/>
+          <textarea name="text" cols="4" rows="3" id="textareaInputField" data-cy="todo-list"></textarea>
+          <button type="submit" class="btn btn-submit" onclick="saveValues()" data-cy="save-todo-button">Save</button>
+          <button type="submit" class="btn btn-delete" onclick="deleteValuesAndLocalStorage()">Delete</button>
         </div>
       </div>
     </div>

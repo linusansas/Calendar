@@ -5,4 +5,5 @@ function main() {
   getDayName();
   startClock();
   updateCalendar();
+  loadLocalStorage();
 }
