@@ -126,9 +126,6 @@ Calendar Section
   flex: 5;
   margin: 10px;
 }
-.calendar {
-  color: var(--color-white);
-}
 .weekdays {
   width: 100%;
   display: flex;
@@ -141,6 +138,7 @@ Calendar Section
 .calendar {
   margin-top: 1rem;
   display: flex;
+  color: var(--color-white);
 }
 
 .week-number {
