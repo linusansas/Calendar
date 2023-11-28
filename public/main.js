@@ -4,5 +4,5 @@ function main() {
   // Display the day name when the page loads
   getDayName();
   startClock();
-  // updateCalendar();
+  updateCalendar();
 }

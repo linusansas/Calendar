@@ -85,6 +85,7 @@ Sidebar
 .sidebar {
   flex: 2;
   padding: 5px;
+  border: solid black 2px;
 }
 .right-area {
   flex: 2;
@@ -227,12 +228,12 @@ Buttons
 Input Form
 ===============
 */
-/* .input-form {
+.input-form {
   width: 100%;
-  margin: 0.5rem auto;
-} */
+  margin: 0.5rem auto;  
+}
 
-/* input,
+input,
 textarea {
   width: 100%;
   padding: 1rem;
@@ -274,7 +275,7 @@ textarea {
   border-radius: var(--border-radius);
   object-fit: cover;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
-} */
+}
 
 /*
 ===============
