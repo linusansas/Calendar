@@ -10,6 +10,7 @@ function createCalendar(year, month) {
  
   const firstDay = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
+  console.log (daysInMonth)
  
   // Adjusting the starting index to make Monday the first day of the week
   let firstDayIndex = (firstDay.getDay() + 6) % 7;
@@ -38,11 +39,15 @@ function createCalendar(year, month) {
  
   // Add empty div elements to represent the days of the previous month
   for (let i = 0; i < firstDayIndex; i++) {
-    const dayElement = document.createElement("div");
+    const dayElement = document.createElement("p");
     dayElement.className = "day";
-    dayElement.setAttribute("data-cy", "calendar-cell-date");
- 
     daysGrid.appendChild(dayElement);
+    dayElement.setAttribute("data-cy", "calendar-cell");
+    const textElement = document.createElement("div");
+    dayElement.appendChild(textElement);
+    textElement.setAttribute("data-cy", "calendar-cell-date")
+
+  
   }
  
   // Add div elements for each day in the current month
@@ -50,9 +55,12 @@ function createCalendar(year, month) {
     const dayElement = document.createElement("div");
     dayElement.className = "day";
     // Add the attribute for the class "day"
-    dayElement.setAttribute("data-cy", "calendar-cell-date");
+    dayElement.setAttribute("data-cy", "calendar-cell");
  
-    dayElement.textContent = i;
+    const textElement = document.createElement("div");
+    textElement.textContent = i;
+    dayElement.appendChild(textElement);
+    textElement.setAttribute("data-cy", "calendar-cell-date")
  
     // Add the "today" class to the current day
     if (
