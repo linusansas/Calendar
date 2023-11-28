@@ -29,6 +29,7 @@ body {
   height: 100%;
   background: -webkit-linear-gradient(to top, #f8cdda, #1d2b64);
   background: linear-gradient(to top, #f8cdda, #1d2b64);
+  background-repeat: no-repeat;
 }
 
 /*
@@ -91,7 +92,7 @@ Sidebar
   padding: 10px;
 }
 
-.container-info {
+/* .container-info {
   position: relative;
   background-color: var(--color-primary-2);
   color: var(--color-secondary-1);
@@ -114,7 +115,7 @@ Sidebar
   top: 80%;
   box-shadow: 0px 13px 10px black;
   transform: rotate(5deg);
-}
+} */
 
 /*
 ===============
@@ -134,7 +135,7 @@ Calendar Section
   color: var(--color-white);
   height: 3.5rem;
 }
-
+/*
 .calendar {
   margin-top: 1rem;
   display: flex;
@@ -175,7 +176,7 @@ Calendar Section
   background-color: rgba(233, 193, 174, 0.4);
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
 }
-/*//week-number
+*/
 
 /*
 ===============
@@ -226,13 +227,12 @@ Buttons
 Input Form
 ===============
 */
-.input-form {
+/* .input-form {
   width: 100%;
   margin: 0.5rem auto;
-  /* margin-bottom: 3rem; */
-}
+} */
 
-input,
+/* input,
 textarea {
   width: 100%;
   padding: 1rem;
@@ -274,7 +274,7 @@ textarea {
   border-radius: var(--border-radius);
   object-fit: cover;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
-}
+} */
 
 /*
 ===============
