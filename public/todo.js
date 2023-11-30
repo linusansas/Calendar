@@ -1,3 +1,4 @@
+
 function saveValues() {
   const titleInputFieldValue = document.getElementById('titleInputField').value;
   const timeInputFieldValue = document.getElementById('timeInputField').value;
@@ -9,23 +10,47 @@ function saveValues() {
       timeField: timeInputFieldValue,
       dateField: dateFieldValue,
       textareaField: textareaFieldValue
-  }
-
+  };
   const jsonStringTodo = JSON.stringify(todoValues);
-
-
-  
   localStorage.setItem('todo', JSON.stringify(todoValues))
-  alert('Values saved to local storage!');
 
-  function listValues() {
+  function listTodoValues() {
     const parsedTodoValues = JSON.parse(jsonStringTodo);
+  
     const listItem = document.createElement('li');
     listItem.textContent = `Title: ${parsedTodoValues.titleField}, Time: ${parsedTodoValues.timeField}, Date: ${parsedTodoValues.dateField}, Textarea: ${parsedTodoValues.textareaField}`;
+
+    const newDeleteButton = document.createElement('button');
+    newDeleteButton.textContent = 'Delete';
+    newDeleteButton.setAttribute('data-cy', 'delete-todo-button');
+    newDeleteButton.addEventListener('click', () => {
+      deleteListItem(listItem);
+    });
+    listItem.appendChild(newDeleteButton);
     document.getElementById('storedItemList').appendChild(listItem);
+
+    const storeLiChild = localStorage.getItem('storeLiChild')
+    ? JSON.parse(localStorage.getItem('storeLiChild'))
+    : [];
+
+    storeLiChild.push(jsonStringTodo);
+    localStorage.setItem('storeLiChild', JSON.stringify(storeLiChild));
+}
+
+function deleteListItem(item) {
+
+  const readLiChildren = JSON.parse(localStorage.getItem('storeLiChild'));
+  const indexToRemove = readLiChildren.findIndex((itemString) => itemString === jsonStringTodo);
+
+  if (indexToRemove !== -1) {
+    readLiChildren.splice(indexToRemove, 1);
+    localStorage.setItem('storeLiChild', JSON.stringify(readLiChildren));
   }
 
-  listValues()
+  item.parentNode.removeChild(item);
+
+}
+  listTodoValues()
 }
 
 function deleteValuesAndLocalStorage() {
@@ -35,6 +60,7 @@ function deleteValuesAndLocalStorage() {
   document.getElementById('textareaInputField').value = '';
 
   localStorage.removeItem('todo');
+  localStorage.removeItem('storeLiChild');
 }
 function loadLocalStorage() {
   const todoString = localStorage.getItem('todo');
