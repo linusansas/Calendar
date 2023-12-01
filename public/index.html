@@ -79,7 +79,7 @@
           <input type="time" placeholder="Time" id="timeInputField"/>
           <input type="text" placeholder="Title" id="titleInputField" data-cy="todo-title-input"/>
           <textarea name="text" cols="4" rows="3" id="textareaInputField" data-cy="todo-list"></textarea>
-          <button type="submit" class="btn btn-submit" onclick="saveAndCreateTodo();" data-cy="save-todo-button">Save</button>
+          <button type="submit" class="btn btn-submit" onclick="saveAndCreateTodo();clearTodoList();" data-cy="save-todo-button">Save</button>
           <button type="submit" class="btn btn-delete" onclick="deleteValuesAndLocalStorage()">Delete</button>
         </div>
       </div>

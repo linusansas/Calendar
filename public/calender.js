@@ -55,6 +55,7 @@ function createCalendar(year, month) {
     dayElement.className = "day";
     // Add the attribute for the class "day"
     dayElement.setAttribute("data-cy", "calendar-cell");
+    dayElement.setAttribute("onclick","selectDayTodo()");
  
     const textElement = document.createElement("div");
     textElement.textContent = i;

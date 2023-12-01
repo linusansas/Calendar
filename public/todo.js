@@ -55,8 +55,9 @@ function saveValues() {
 
     function deleteTodo(todoItem) {
       const index = Array.from(todoItem.parentNode.children).indexOf(todoItem);
-
-      todo.splice(index, 1);
+      let storedTodos = JSON.parse(localStorage.getItem("todos")) || [];
+      storedTodos.splice(index, 1);
+      localStorage.setItem("todos", JSON.stringify(storedTodos));
       todoItem.remove();
       console.log(todo);
     }
@@ -87,4 +88,21 @@ function saveValues() {
       }
 
       console.log(retrievedTodo)
+    }
+
+    function clearTodoList() {
+      const todoList = document.getElementById("todoList");
+    
+      while (todoList.firstChild) {
+        todoList.removeChild(todoList.firstChild);
+      }
+    
+      let storedTodos = JSON.parse(localStorage.getItem("todos")) || [];
+    
+      storedTodos.forEach((todoItem) => {
+        if (todoItem.date === document.getElementById("dateInputField").value) {
+          const injectTodo = createTodoElement(todoItem);
+          todoList.appendChild(injectTodo);
+        }
+      });
     }
