@@ -55,7 +55,9 @@ function createCalendar(year, month) {
     dayElement.className = "day";
     // Add the attribute for the class "day"
     dayElement.setAttribute("data-cy", "calendar-cell");
-    dayElement.setAttribute("onclick","selectDayTodo()");
+    dayElement.setAttribute("onclick","selectDayTodo(event)");
+
+    
  
     const textElement = document.createElement("div");
     textElement.textContent = i;
@@ -121,3 +123,16 @@ function prevMonth() {
 //   const indexImg = month;
 //   imageElement.setAttribute("src", monthImg[indexImg]);
 // }
+
+function handleDateChange() {
+  const selectedDate = document.getElementById("dateInputField").value;
+  const parsedDate = new Date(selectedDate);
+  
+  // Display the selected date in the welcome segment
+  getDayName(parsedDate.getDate(), parsedDate.getMonth(), parsedDate.getFullYear());
+
+  // Update the calendar to reflect the selected month and year
+  currentMonth = parsedDate.getMonth();
+  currentYear = parsedDate.getFullYear();
+  updateCalendar();
+}

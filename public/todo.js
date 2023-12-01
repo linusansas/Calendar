@@ -89,20 +89,8 @@ function saveValues() {
 
       console.log(retrievedTodo)
     }
-
+    
     function clearTodoList() {
-      const todoList = document.getElementById("todoList");
     
-      while (todoList.firstChild) {
-        todoList.removeChild(todoList.firstChild);
-      }
-    
-      let storedTodos = JSON.parse(localStorage.getItem("todos")) || [];
-    
-      storedTodos.forEach((todoItem) => {
-        if (todoItem.date === document.getElementById("dateInputField").value) {
-          const injectTodo = createTodoElement(todoItem);
-          todoList.appendChild(injectTodo);
-        }
-      });
     }
+    
