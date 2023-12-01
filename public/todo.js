@@ -5,6 +5,7 @@ function saveValues() {
   const timeUserInput = document.getElementById("timeInputField").value;
   const titleUserInput = document.getElementById("titleInputField").value;
   const textareaUserInput = document.getElementById("textareaInputField").value;
+  console.log(todo)
 
   return {
     date: dateUserInput,
@@ -44,6 +45,7 @@ function saveValues() {
 
       todoList.appendChild(newTodo);
       todo.push(userInputData);
+      storeTodo();
     }
 
     function saveAndCreateTodo() {
@@ -87,43 +89,42 @@ function saveValues() {
         })
       }
 
-      console.log(retrievedTodo)
     }
-    
-    function clearTodoList() {
+    function injectTodosForSelectedDate() {
       const todoList = document.getElementById("todoList");
+      const selectedDate = document.getElementById("dateInputField").value;
     
-      // Clear all child elements of todoList
+      // Clear the todo list
       while (todoList.firstChild) {
         todoList.removeChild(todoList.firstChild);
       }
     
-      // Get the selected date from the date input
-      const selectedDate = document.getElementById("dateInputField").value;
-    
-      // If a date is selected, display todos for that date
       if (selectedDate) {
-        // Parse the selected date to get day, month, and year
-        const parsedDate = new Date(selectedDate);
-    
-        // Get stored todos from local storage
         const storedTodos = JSON.parse(localStorage.getItem("todos")) || [];
     
-        // Filter storedTodos based on the selected date
+        // Filter todos for the selected date
         const todosForSelectedDate = storedTodos.filter((todoItem) => {
-          return (
-            todoItem.date === parsedDate.getDate().toString() &&
-            todoItem.month === parsedDate.getMonth().toString() &&
-            todoItem.year === parsedDate.getFullYear().toString()
-          );
+          return todoItem.date === selectedDate;
         });
     
-        // Create and inject todos for the selected date
-        todosForSelectedDate.forEach((todoItem) => {
-          const injectTodo = createTodoElement(todoItem);
-          todoList.appendChild(injectTodo);
-        });
+        // If there are todos for the selected date, display them
+        if (todosForSelectedDate.length > 0) {
+          todosForSelectedDate.forEach((todoItem) => {
+            const injectTodo = createTodoElement(todoItem);
+            todoList.appendChild(injectTodo);
+          });
+        }
       }
+    }
+    
+    function clearTodoList() {
+      const todoList = document.getElementById("todoList");
+
+      while (todoList.firstChild) {
+        todoList.removeChild(todoList.firstChild);
+      }
+
+      injectTodosForSelectedDate();
     }
     
     

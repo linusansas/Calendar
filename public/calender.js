@@ -45,8 +45,6 @@ function createCalendar(year, month) {
     const textElement = document.createElement("div");
     dayElement.appendChild(textElement);
     textElement.setAttribute("data-cy", "calendar-cell-date")
-
-  
   }
  
   // Add div elements for each day in the current month
@@ -56,8 +54,6 @@ function createCalendar(year, month) {
     // Add the attribute for the class "day"
     dayElement.setAttribute("data-cy", "calendar-cell");
     dayElement.setAttribute("onclick","selectDayTodo(event)");
-
-    
  
     const textElement = document.createElement("div");
     textElement.textContent = i;
@@ -126,14 +122,12 @@ function prevMonth() {
 
 function handleDateChange() {
   clearTodoList()
-  const selectedDate = document.getElementById("dateInputField").value;
-  const parsedDate = new Date(selectedDate);
+  const dateInputField = document.getElementById("dateInputField");
+  const selectedDate = new Date(dateInputField.value);
   
-  // Display the selected date in the welcome segment
-  getDayName(parsedDate.getDate(), parsedDate.getMonth(), parsedDate.getFullYear());
+  getDayName(selectedDate.getDate(), selectedDate.getMonth(), selectedDate.getFullYear());
 
-  // Update the calendar to reflect the selected month and year
-  currentMonth = parsedDate.getMonth();
-  currentYear = parsedDate.getFullYear();
+  currentMonth = selectedDate.getMonth();
+  currentYear = selectedDate.getFullYear();
   updateCalendar();
 }

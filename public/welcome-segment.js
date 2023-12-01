@@ -39,13 +39,18 @@ function getDayName(day, month, year) {
   currentDayName.textContent = currentDayString;
 }
 function selectDayTodo(event) {
-  clearTodoList()
-  const selectedDay = event.target.textContent;
-  const selectedMonth = currentMonth; // Assuming currentMonth is a global variable
-  const selectedYear = currentYear; // Assuming currentYear is a global variable
+
+  const selectedDay = event.target.textContent.trim();
+  const selectedMonth = currentMonth;
+  const selectedYear = currentYear;
+
+  const dateInputField = document.getElementById("dateInputField");
+  dateInputField.value = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-${selectedDay.toString().padStart(2, '0')}`;
+
   getDayName(selectedDay, selectedMonth, selectedYear);
   currentMonth = selectedMonth;
   currentYear = selectedYear;
+
   updateCalendar();
-  console.log(selectedDay);
+  injectTodosForSelectedDate()
 }
