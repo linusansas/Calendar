@@ -125,6 +125,7 @@ function prevMonth() {
 // }
 
 function handleDateChange() {
+  clearTodoList()
   const selectedDate = document.getElementById("dateInputField").value;
   const parsedDate = new Date(selectedDate);
   

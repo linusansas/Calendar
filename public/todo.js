@@ -91,6 +91,39 @@ function saveValues() {
     }
     
     function clearTodoList() {
+      const todoList = document.getElementById("todoList");
     
+      // Clear all child elements of todoList
+      while (todoList.firstChild) {
+        todoList.removeChild(todoList.firstChild);
+      }
+    
+      // Get the selected date from the date input
+      const selectedDate = document.getElementById("dateInputField").value;
+    
+      // If a date is selected, display todos for that date
+      if (selectedDate) {
+        // Parse the selected date to get day, month, and year
+        const parsedDate = new Date(selectedDate);
+    
+        // Get stored todos from local storage
+        const storedTodos = JSON.parse(localStorage.getItem("todos")) || [];
+    
+        // Filter storedTodos based on the selected date
+        const todosForSelectedDate = storedTodos.filter((todoItem) => {
+          return (
+            todoItem.date === parsedDate.getDate().toString() &&
+            todoItem.month === parsedDate.getMonth().toString() &&
+            todoItem.year === parsedDate.getFullYear().toString()
+          );
+        });
+    
+        // Create and inject todos for the selected date
+        todosForSelectedDate.forEach((todoItem) => {
+          const injectTodo = createTodoElement(todoItem);
+          todoList.appendChild(injectTodo);
+        });
+      }
     }
+    
     
