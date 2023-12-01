@@ -10,7 +10,6 @@ function createCalendar(year, month) {
  
   const firstDay = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  console.log (daysInMonth)
  
   // Adjusting the starting index to make Monday the first day of the week
   let firstDayIndex = (firstDay.getDay() + 6) % 7;
@@ -78,7 +77,6 @@ function createCalendar(year, month) {
 * Updates the calendar to reflect the current month and year.
 */
 function updateCalendar() {
-  console.log("updated calendar");
   createCalendar(currentYear, currentMonth);
 }
  

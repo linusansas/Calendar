@@ -1,74 +1,90 @@
+let todo = [];
 
 function saveValues() {
-  const titleInputFieldValue = document.getElementById('titleInputField').value;
-  const timeInputFieldValue = document.getElementById('timeInputField').value;
-  const dateFieldValue = document.getElementById('dateInputField').value;
-  const textareaFieldValue = document.getElementById('textareaInputField').value;
+  const dateUserInput = document.getElementById("dateInputField").value;
+  const timeUserInput = document.getElementById("timeInputField").value;
+  const titleUserInput = document.getElementById("titleInputField").value;
+  const textareaUserInput = document.getElementById("textareaInputField").value;
 
-  const todoValues = {
-      titleField: titleInputFieldValue,
-      timeField: timeInputFieldValue,
-      dateField: dateFieldValue,
-      textareaField: textareaFieldValue
+  return {
+    date: dateUserInput,
+    time: timeUserInput,
+    title: titleUserInput,
+    textarea: textareaUserInput
   };
-  const jsonStringTodo = JSON.stringify(todoValues);
-  localStorage.setItem('todo', JSON.stringify(todoValues))
-
-  function listTodoValues() {
-    const parsedTodoValues = JSON.parse(jsonStringTodo);
-  
-    const listItem = document.createElement('li');
-    listItem.textContent = `Title: ${parsedTodoValues.titleField}, Time: ${parsedTodoValues.timeField}, Date: ${parsedTodoValues.dateField}, Textarea: ${parsedTodoValues.textareaField}`;
-
-    const newDeleteButton = document.createElement('button');
-    newDeleteButton.textContent = 'Delete';
-    newDeleteButton.setAttribute('data-cy', 'delete-todo-button');
-    newDeleteButton.addEventListener('click', () => {
-      deleteListItem(listItem);
-    });
-    listItem.appendChild(newDeleteButton);
-    document.getElementById('storedItemList').appendChild(listItem);
-
-    const storeLiChild = localStorage.getItem('storeLiChild')
-    ? JSON.parse(localStorage.getItem('storeLiChild'))
-    : [];
-
-    storeLiChild.push(jsonStringTodo);
-    localStorage.setItem('storeLiChild', JSON.stringify(storeLiChild));
 }
 
-function deleteListItem(item) {
+    function createTodoElement(todoData) {
+      const newTodo = document.createElement("li");
+      const todoText = `
+        <span>${todoData.title}</span><br>
+        <span>${todoData.date}</span><br>
+        <span>${todoData.time}</span><br>
+        <span>${todoData.textarea}</span>`;
+      newTodo.innerHTML = todoText;
 
-  const readLiChildren = JSON.parse(localStorage.getItem('storeLiChild'));
-  const indexToRemove = readLiChildren.findIndex((itemString) => itemString === jsonStringTodo);
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.onclick = () => deleteTodo(newTodo);
+      deleteButton.setAttribute("data-cy", "delete-todo-button")
+      newTodo.appendChild(deleteButton);
 
-  if (indexToRemove !== -1) {
-    readLiChildren.splice(indexToRemove, 1);
-    localStorage.setItem('storeLiChild', JSON.stringify(readLiChildren));
-  }
+      const editButton = document.createElement('button');
+      editButton.textContent = 'Edit';
+      editButton.setAttribute("data-cy", "edit-todo-button")
+      editButton.onclick = () => allowUserEdit(newTodo);
+      newTodo.appendChild(editButton);
+      return newTodo;
+    }
 
-  item.parentNode.removeChild(item);
+    function createTodo() {
+      const userInputData = saveValues();
+      const todoList = document.getElementById("todoList");
+      const newTodo = createTodoElement(userInputData);
 
-}
-  listTodoValues()
-}
+      todoList.appendChild(newTodo);
+      todo.push(userInputData);
+    }
 
-function deleteValuesAndLocalStorage() {
-  document.getElementById('titleInputField').value = '';
-  document.getElementById('timeInputField').value = '';
-  document.getElementById('dateInputField').value = '';
-  document.getElementById('textareaInputField').value = '';
+    function saveAndCreateTodo() {
+      saveValues();
+      createTodo();
+      storeTodo();
 
-  localStorage.removeItem('todo');
-  localStorage.removeItem('storeLiChild');
-}
-function loadLocalStorage() {
-  const todoString = localStorage.getItem('todo');
-  if (todoString) {
-    const todoValues = JSON.parse(todoString);
-    document.getElementById('titleInputField').value = todoValues.titleField || '';
-    document.getElementById('timeInputField').value = todoValues.timeField || '';
-    document.getElementById('dateInputField').value = todoValues.dateField || '';
-    document.getElementById('textareaInputField').value = todoValues.textareaField || '';
-  }
-}
+    }
+
+    function deleteTodo(todoItem) {
+      const index = Array.from(todoItem.parentNode.children).indexOf(todoItem);
+
+      todo.splice(index, 1);
+      todoItem.remove();
+      console.log(todo);
+    }
+
+    function allowUserEdit(todoItem) {
+      todoItem.querySelectorAll('span').forEach(span => {
+        span.setAttribute('contenteditable', 'true');
+      });
+    }
+    function storeTodo() {
+      const hasNonEmptyTodo = todo.some(item => 
+        item.date !== "" || item.time !== "" || item.title !== "" || item.textarea !== ""); 
+        if (hasNonEmptyTodo) {
+        let todoString = JSON.stringify(todo);
+        localStorage.setItem("todos", todoString);
+      }
+    }
+    function retrieveTodo() {
+      let retString = localStorage.getItem("todos");
+      let retrievedTodo = JSON.parse(retString);
+
+      if (retrievedTodo && retrievedTodo.length > 0 ) {
+        const todoList = document.getElementById("todoList");
+        retrievedTodo.forEach(todoItem => {
+          const injectTodo = createTodoElement(todoItem);
+          todoList.appendChild(injectTodo);
+        })
+      }
+
+      console.log(retrievedTodo)
+    }

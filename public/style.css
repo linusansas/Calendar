@@ -3,10 +3,9 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 :root {
   --color-primary-1: #191919;
-  --color-primary-2: #e9c1ae;
+  --color-primary-2: #ffffff;
   --color-secondary-1: #3b4d95;
   --color-primary-3: #e5e6f3;
   --color-white: #ffffff;
@@ -189,6 +188,10 @@ Calendar Section
 Buttons
 ===============
 */
+.editButton {
+  display: flex;
+  justify-content: flex-end;
+}
 .btn {
   border: 2px solid transparent;
   border-radius: var(--border-radius);

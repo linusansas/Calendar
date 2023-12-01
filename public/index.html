@@ -50,7 +50,7 @@
         <div class="container-info" data-cy="todo-list">
           <h3>Today's activities</h3>
           <br>
-          <ul id="storedItemList" data-cy="delete-todo-button">
+          <ul id="todoList" data-cy="delete-todo-button">
           </ul>
         </div> 
       </aside>
@@ -75,11 +75,11 @@
           <img class="month-img" src="" alt="month-image" />
         </div>
         <div class="input-form">
-          <input type="text" placeholder="Date" id="dateInputField" data-cy="todo-date-input"/>
-          <input type="text" placeholder="Time" id="timeInputField"/>
+          <input type="date" placeholder="Date" id="dateInputField" data-cy="todo-date-input"/>
+          <input type="time" placeholder="Time" id="timeInputField"/>
           <input type="text" placeholder="Title" id="titleInputField" data-cy="todo-title-input"/>
           <textarea name="text" cols="4" rows="3" id="textareaInputField" data-cy="todo-list"></textarea>
-          <button type="submit" class="btn btn-submit" onclick="saveValues()" data-cy="save-todo-button">Save</button>
+          <button type="submit" class="btn btn-submit" onclick="saveAndCreateTodo();" data-cy="save-todo-button">Save</button>
           <button type="submit" class="btn btn-delete" onclick="deleteValuesAndLocalStorage()">Delete</button>
         </div>
       </div>
