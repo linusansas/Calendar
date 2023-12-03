@@ -1,4 +1,5 @@
 let todo = [];
+let todoCounts = {};
 
 function saveValues() {
   const dateUserInput = document.getElementById("dateInputField").value;
@@ -46,6 +47,9 @@ function saveValues() {
       todoList.appendChild(newTodo);
       todo.push(userInputData);
       storeTodo();
+
+      updateTodoCount(userInputData.date);
+      updateCalendarCell(userInputData.date);
     }
 
     function saveAndCreateTodo() {
@@ -58,10 +62,22 @@ function saveValues() {
     function deleteTodo(todoItem) {
       const index = Array.from(todoItem.parentNode.children).indexOf(todoItem);
       let storedTodos = JSON.parse(localStorage.getItem("todos")) || [];
-      storedTodos.splice(index, 1);
-      localStorage.setItem("todos", JSON.stringify(storedTodos));
-      todoItem.remove();
-      console.log(todo);
+    
+      if (storedTodos.length > index) {
+        const deletedTodo = storedTodos.splice(index, 1)[0];
+    
+        // Log information about the deletedTodo
+        console.log("Deleted Todo:", deletedTodo);
+    
+        localStorage.setItem("todos", JSON.stringify(storedTodos));
+        todoItem.remove();
+    
+        updateTodoCount(deletedTodo.date);
+        updateCalendarCell(deletedTodo.date);
+        console.log(todo);
+      } else {
+        console.error("Invalid index or storedTodos is empty.");
+      }
     }
 
     function allowUserEdit(todoItem) {
@@ -125,6 +141,39 @@ function saveValues() {
       }
 
       injectTodosForSelectedDate();
+      retrieveTodo();
     }
+
+    function updateTodoCount(date) {
+      const storedTodos = JSON.parse(localStorage.getItem("todos")) || [];
+      const todosForDate = storedTodos.filter((todoItem) => todoItem.date === date);
+      const todoCount = todosForDate.length;
     
-    
+      // Update todo count in local storage
+      const todoCounts = JSON.parse(localStorage.getItem("todoCounts")) || {};
+      todoCounts[date] = todoCount;
+      localStorage.setItem("todoCounts", JSON.stringify(todoCounts));
+    }
+
+
+
+
+function updateCalendarCell(date) {
+  const calendarCells = document.querySelectorAll('[data-cy="calendar-cell-date"]');
+  const formattedDate = new Date(date).getDate();
+  
+  calendarCells.forEach((cell) => {
+    if (cell.textContent === formattedDate.toString()) {
+      const todoCountElement = cell.parentNode.querySelector('[data-cy="calendar-cell-todos"]');
+      const day = formattedDate;
+      updateTodoCountForCalendarCell(todoCountElement, currentYear, currentMonth, day);
+    }
+  });
+}
+
+function updateTodoCountForCalendarCell(todoCountElement, year, month, day) {
+  const date = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+  const todoCounts = JSON.parse(localStorage.getItem("todoCounts")) || {};
+  const todoCount = todoCounts[date] || 0;
+  todoCountElement.textContent = todoCount > 0 ? todoCount.toString() : "";
+}

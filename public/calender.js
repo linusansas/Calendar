@@ -57,9 +57,17 @@ function createCalendar(year, month) {
  
     const textElement = document.createElement("div");
     textElement.textContent = i;
-    dayElement.appendChild(textElement);
     textElement.setAttribute("data-cy", "calendar-cell-date")
+    dayElement.appendChild(textElement);
  
+    const todoCountElement = document.createElement("div");
+    todoCountElement.setAttribute("data-cy", "calendar-cell-todos");
+
+    updateTodoCountForCalendarCell(todoCountElement, currentYear, currentMonth, i);
+
+    dayElement.appendChild(todoCountElement);
+
+
     // Add the "today" class to the current day
     if (
       i === new Date().getDate() &&
@@ -123,11 +131,17 @@ function prevMonth() {
 function handleDateChange() {
   clearTodoList()
   const dateInputField = document.getElementById("dateInputField");
-  const selectedDate = new Date(dateInputField.value);
-  
-  getDayName(selectedDate.getDate(), selectedDate.getMonth(), selectedDate.getFullYear());
+  const selectedDate = dateInputField.value;
 
-  currentMonth = selectedDate.getMonth();
-  currentYear = selectedDate.getFullYear();
+  if (!selectedDate) {
+    clearTodoList();
+    return;
+  }
+
+  const parsedDate = new Date(selectedDate);
+  getDayName(parsedDate.getDate(), parsedDate.getMonth(), parsedDate.getFullYear());
+
+  currentMonth = parsedDate.getMonth();
+  currentYear = parsedDate.getFullYear();
   updateCalendar();
 }

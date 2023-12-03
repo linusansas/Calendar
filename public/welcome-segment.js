@@ -45,12 +45,12 @@ function selectDayTodo(event) {
   const selectedYear = currentYear;
 
   const dateInputField = document.getElementById("dateInputField");
-  dateInputField.value = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-${selectedDay.toString().padStart(2, '0')}`;
+  dateInputField.value = `${selectedYear}-${(selectedMonth + 1).toString().padStart(2, '0')}-${selectedDay.toString().padStart(2, '0')}`;
 
   getDayName(selectedDay, selectedMonth, selectedYear);
   currentMonth = selectedMonth;
   currentYear = selectedYear;
 
   updateCalendar();
-  injectTodosForSelectedDate()
+  injectTodosForSelectedDate();
 }
