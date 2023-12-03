@@ -54,19 +54,11 @@ function createCalendar(year, month) {
     // Add the attribute for the class "day"
     dayElement.setAttribute("data-cy", "calendar-cell");
     dayElement.setAttribute("onclick","selectDayTodo(event)");
- 
+
     const textElement = document.createElement("div");
     textElement.textContent = i;
-    textElement.setAttribute("data-cy", "calendar-cell-date")
+    textElement.setAttribute("data-cy", "calendar-cell-date");
     dayElement.appendChild(textElement);
- 
-    const todoCountElement = document.createElement("div");
-    todoCountElement.setAttribute("data-cy", "calendar-cell-todos");
-
-    updateTodoCountForCalendarCell(todoCountElement, currentYear, currentMonth, i);
-
-    dayElement.appendChild(todoCountElement);
-
 
     // Add the "today" class to the current day
     if (
@@ -76,6 +68,17 @@ function createCalendar(year, month) {
     ) {
       dayElement.classList.add("today");
     }
+
+    // Only create and append the todoCountElement if there is content
+    const todoCountElement = document.createElement("div");
+    todoCountElement.setAttribute("data-cy", "calendar-cell-todos");
+    
+    updateTodoCountForCalendarCell(todoCountElement, currentYear, currentMonth, i);
+
+    if (todoCountElement.textContent.trim() !== "") {
+      dayElement.appendChild(todoCountElement);
+    }
+
     daysGrid.appendChild(dayElement);
   }
 }
