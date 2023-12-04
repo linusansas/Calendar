@@ -1,5 +1,4 @@
 let todo = JSON.parse(localStorage.getItem("todos")) || [];
-const todoList = document.getElementById("todoList");
 let todoCounts = {};
 
 let editingTodoIndex = -1;
@@ -69,6 +68,7 @@ function createTodo() {
     }
   } else {
     // If not in editing mode, proceed with creating a new todo
+    console.log("New Todo:", newTodo);
     todoList.appendChild(newTodo);
     // Update or add the todo to the array
     todo.push({ ...userInputData, id: id });
@@ -93,7 +93,7 @@ function saveAndCreateTodo() {
 
   if (todoItemId && !dateInputField.disabled) {
     // If an existing todo is being edited, save the edited todo
-    saveEditedTodo(todoItemId, id); // Pass todoItemId and id as parameters
+    saveEditedTodo(todoItemId); // Pass todoItemId as a parameter
   } else {
     // If not in editing mode, save values and create a new todo
     const userInputData = saveValues();
@@ -109,6 +109,7 @@ function saveAndCreateTodo() {
   editingTodoIndex = -1;
   originalTodo = null;
 }
+
 
 
     
@@ -198,6 +199,41 @@ function saveAndCreateTodo() {
       }
     }
     
+    function saveEditedTodo(todoItemId) {
+      // Add your implementation to save the edited todo
+      const editedTodoIndex = todo.findIndex((item) => item.id === todoItemId);
+      
+      if (editedTodoIndex !== -1) {
+        // Assuming saveValues returns an object with properties (date, time, title, textarea)
+        const editedTodoData = saveValues();
+        todo[editedTodoIndex] = { ...editedTodoData, id: todoItemId };
+        
+        // Replace the existing todo element with the updated one
+        const editedTodoElement = createTodoElement(editedTodoData, todoItemId);
+        const existingTodoElement = document.querySelector(`[data-todo-id="${todoItemId}"]`);
+        
+        if (existingTodoElement) {
+          // Replace the content of the existing todo element
+          existingTodoElement.innerHTML = editedTodoElement.innerHTML;
+        } else {
+          console.error("Existing todo element not found.");
+        }
+        
+        // Store the updated todo
+        storeTodo();
+        
+        // Update todo count and calendar cell
+        updateTodoCount(editedTodoData.date);
+        updateCalendarCell(editedTodoData.date);
+    
+        // Clear input fields or perform any additional actions as needed
+        clearInputFields();
+      } else {
+        console.error("Edited todo not found in the todo list.");
+      }
+    }
+    
+    
     
     
     
@@ -285,22 +321,26 @@ function saveAndCreateTodo() {
     function updateCalendarCell(date) {
       const calendarCells = document.querySelectorAll('[data-cy="calendar-cell-date"]');
       const formattedDate = new Date(date).getDate();
-      
+    
       calendarCells.forEach((cell) => {
         if (cell.textContent === formattedDate.toString()) {
           console.log('Cell Text Content:', cell.textContent);
-          let todoCountElement = cell.parentNode.querySelector('[data-cy="calendar-cell-todos"]');
-          
-          // Check if todoCountElement exists, if not, create and append it
-          if (!todoCountElement) {
-            todoCountElement = document.createElement("div");
-            todoCountElement.setAttribute("data-cy", "calendar-cell-todos");
-            cell.parentNode.appendChild(todoCountElement);
-          }
     
-          console.log('Todo Count Element:', todoCountElement);
-          const day = formattedDate;
-          updateTodoCountForCalendarCell(todoCountElement, currentYear, currentMonth, day);
+          // Ensure that cell has a parent node before attempting to append
+          if (cell.parentNode) {
+            let todoCountElement = cell.parentNode.querySelector('[data-cy="calendar-cell-todos"]');
+    
+            // Check if todoCountElement exists, if not, create and append it
+            if (!todoCountElement) {
+              todoCountElement = document.createElement("div");
+              todoCountElement.setAttribute("data-cy", "calendar-cell-todos");
+              cell.parentNode.appendChild(todoCountElement);
+            }
+    
+            console.log('Todo Count Element:', todoCountElement);
+            const day = formattedDate;
+            updateTodoCountForCalendarCell(todoCountElement, currentYear, currentMonth, day);
+          }
         }
       });
     }
@@ -315,47 +355,106 @@ function updateTodoCountForCalendarCell(todoCountElement, year, month, day) {
 }
 
 
-function saveEditedTodo(todoItemId, userInputData) {
-  const selectedTodoItem = document.getElementById(todoItemId);
 
-  if (selectedTodoItem) {
-    // Update the text content of each span element
-    const spanElements = selectedTodoItem.querySelectorAll('span');
-    if (spanElements.length >= 4) {
-      spanElements[0].textContent = `Title: ${userInputData.title}`;
-      spanElements[1].textContent = `Date: ${userInputData.date}`;
-      spanElements[2].textContent = `Time: ${userInputData.time}`;
-      spanElements[3].textContent = `Textarea: ${userInputData.textarea}`;
-    } else {
-      console.error("Not enough span elements found in the selectedTodoItem.");
-    }
-  
-    // Enable date input field for future edits
-    const dateInputField = document.getElementById("dateInputField");
-    dateInputField.disabled = false;
-  
-    // Update the local array to reflect the changes
-    const existingTodoIndex = todo.findIndex((item) => item.id === todoItemId);
-    if (existingTodoIndex !== -1) {
-      todo[existingTodoIndex] = { ...userInputData, id: todoItemId };
-    }
-  
-    // Update the local storage
-    storeTodo(() => {
-      updateTodoCount(dateInputField.value);
-      updateCalendarCell(dateInputField.value);
-    });
-  
-    // Exit editing mode
-    exitEditMode();
+function saveAndCreateTodo() {
+  const dateInputField = document.getElementById("dateInputField");
+  const todoItemId = dateInputField.getAttribute("data-todo-id");
+  const id = new Date().getTime().toString(); // or use any suitable method to generate an ID
+
+  // Save the edited todo if in editing mode, else create a new todo
+  if (todoItemId && !dateInputField.disabled) {
+    saveEditedTodo(todoItemId);
   } else {
-    console.error("Selected todo item not found in the todo list.");
+    // If not in editing mode, save values and create a new todo
+    const userInputData = saveValues();
+    const newTodo = createTodoElement(userInputData, id);
+
+    console.log("TodoList:", todoList);
+    console.log("New Todo:", newTodo);
+
+    if (todoItemId) {
+      // If in editing mode, replace the existing todo
+      const existingTodo = todoList.querySelector(`[data-todo-id="${todoItemId}"]`);
+      if (existingTodo) {
+        existingTodo.replaceWith(newTodo);
+
+        // Update or add the todo to the array
+        const existingTodoIndex = todo.findIndex((item) => item.id === todoItemId);
+        if (existingTodoIndex !== -1) {
+          // If the todo already exists, replace it
+          todo[existingTodoIndex] = { ...userInputData, id: todoItemId };
+        }
+      }
+    } else {
+      // If not in editing mode, directly append the new todo to the list
+      console.log("Appending new todo to the list:", newTodo);
+      console.log("TodoList Element:", todoList);
+      todoList.appendChild(newTodo);
+      // Update or add the todo to the array
+      todo.push({ ...userInputData, id: id });
+    }
+
+    // Store the updated todo
+    storeTodo();
+
+    // Update todo count and calendar cell
+    updateTodoCount(userInputData.date);
+    updateCalendarCell(userInputData.date);
+
+    // Clear input fields
+    clearInputFields();
+  }
+
+  // Always store the updated todo
+  storeTodo();
+  console.log(todo);
+
+  // Reset the editingTodoIndex and originalTodo
+  editingTodoIndex = -1;
+  originalTodo = null;
+}
+
+
+
+
+
+
+function clearInputFields() {
+  const dateInputField = document.getElementById("dateInputField");
+  const timeInputField = document.getElementById("timeInputField");
+  const titleInputField = document.getElementById("titleInputField");
+  const textareaInputField = document.getElementById("textareaInputField");
+
+  // Check if the elements are found before accessing their properties
+  if (dateInputField) {
+    dateInputField.value = "";
+  } else {
+    console.error("dateInputField not found in the DOM");
+  }
+
+  if (timeInputField) {
+    timeInputField.value = "";
+  } else {
+    console.error("timeInputField not found in the DOM");
+  }
+
+  if (titleInputField) {
+    titleInputField.value = "";
+  } else {
+    console.error("titleInputField not found in the DOM");
+  }
+
+  if (textareaInputField) {
+    textareaInputField.value = "";
+  } else {
+    console.error("textareaInputField not found in the DOM");
   }
 }
 
-function clearInputFields() {
-  document.getElementById("dateInputField").value = "";
-  document.getElementById("timeInputField").value = "";
-  document.getElementById("titleInputField").value = "";
-  document.getElementById("textareaInputField").value = "";
+function exitEditMode() {
+  // You can perform any necessary actions to exit the editing mode
+  // For example, enable input fields, reset flags, etc.
+  const dateInputField = document.getElementById("dateInputField");
+  dateInputField.disabled = false;
+  // You might need additional logic depending on your specific requirements
 }

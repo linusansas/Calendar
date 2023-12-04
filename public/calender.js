@@ -58,6 +58,7 @@ function createCalendar(year, month) {
     const textElement = document.createElement("div");
     textElement.textContent = i;
     textElement.setAttribute("data-cy", "calendar-cell-date");
+    textElement.setAttribute("onclick","selectDayTodo(event)");
     dayElement.appendChild(textElement);
 
     // Add the "today" class to the current day
@@ -72,6 +73,7 @@ function createCalendar(year, month) {
     // Only create and append the todoCountElement if there is content
     const todoCountElement = document.createElement("div");
     todoCountElement.setAttribute("data-cy", "calendar-cell-todos");
+    todoCountElement.setAttribute("onclick","selectDayTodo(event)");
     
     updateTodoCountForCalendarCell(todoCountElement, currentYear, currentMonth, i);
 
