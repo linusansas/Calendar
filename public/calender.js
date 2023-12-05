@@ -134,19 +134,28 @@ function prevMonth() {
 // }
 
 function handleDateChange() {
-  clearTodoList()
-  const dateInputField = document.getElementById("dateInputField");
-  const selectedDate = dateInputField.value;
+  // Get the selected date from the input field
+  const selectedDate = document.getElementById("dateInputField").value;
 
   if (!selectedDate) {
+    // If no date is selected, clear the todo list and return
     clearTodoList();
     return;
   }
 
+  // Parse the selected date
   const parsedDate = new Date(selectedDate);
-  getDayName(parsedDate.getDate(), parsedDate.getMonth(), parsedDate.getFullYear());
 
+  // Update the current month and year based on the selected date
   currentMonth = parsedDate.getMonth();
   currentYear = parsedDate.getFullYear();
+
+  // Get and display the day name
+  getDayName(parsedDate.getDate(), currentMonth, currentYear);
+
+  // Update the calendar
   updateCalendar();
+
+  // Optionally, update the todo list for the selected date
+  updateTodoList(selectedDate);
 }
