@@ -54,4 +54,5 @@ function selectDayTodo(event) {
 
   updateCalendar();
   injectTodosForSelectedDate();
+  console.log();
 }
