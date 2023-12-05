@@ -118,6 +118,9 @@ function deleteTodo(todoItem) {
   const todoItemId = todoItem.getAttribute("data-todo-id");
   let storedTodos = JSON.parse(localStorage.getItem("todos")) || [];
 
+  console.log("Deleting Todo with ID:", todoItemId);
+  console.log("Stored Todos:", storedTodos);
+
   // Find the index of the todo item with the matching ID
   const todoIndex = storedTodos.findIndex((item) => item.id === todoItemId);
 
@@ -160,32 +163,35 @@ function deleteTodo(todoItem) {
   }
 }
 
-    function allowUserEdit(todoItem) {
-      const dateInputField = document.getElementById("dateInputField");
-      const todoItemId = todoItem.getAttribute("data-todo-id");
-      const existingTodoIndex = todo.findIndex((item) => item.id === todoItemId);
-    
-      if (existingTodoIndex !== -1) {
-        editingTodoIndex = existingTodoIndex;
-    
-        originalTodo = { ...todo[editingTodoIndex] };
-    
-        const userInputData = todo[existingTodoIndex];
-        document.getElementById("titleInputField").value = userInputData.title;
-        document.getElementById("timeInputField").value = userInputData.time;
-        document.getElementById("textareaInputField").value = userInputData.textarea;
-    
-        dateInputField.value = userInputData.date;
-        dateInputField.setAttribute("data-todo-id", todoItemId);
-    
-        console.log("Allowing user to edit todo with ID:", todoItemId);
-        console.log("Original todo:", originalTodo);
-        console.log("Data attributes set for date input field:", dateInputField.dataset);
-      } else {
-        console.error("Selected todo item not found in the todo list.");
-      }
-    }
-    
+function allowUserEdit(todoItem) {
+  const dateInputField = document.getElementById("dateInputField");
+  const todoItemId = todoItem.getAttribute("data-todo-id");
+  const existingTodoIndex = todo.findIndex((item) => item.id === todoItemId);
+
+  if (existingTodoIndex !== -1) {
+    editingTodoIndex = existingTodoIndex;
+
+    originalTodo = { ...todo[editingTodoIndex] };
+
+    const userInputData = todo[existingTodoIndex];
+    document.getElementById("titleInputField").value = userInputData.title;
+    document.getElementById("timeInputField").value = userInputData.time;
+    document.getElementById("textareaInputField").value = userInputData.textarea;
+
+    dateInputField.value = userInputData.date;
+    dateInputField.setAttribute("data-todo-id", todoItemId);
+
+    console.log("Allowing user to edit todo with ID:", todoItemId);
+    console.log("Original todo:", originalTodo);
+    console.log("Data attributes set for date input field:", dateInputField.dataset);
+
+    // Add additional logging to check todo array
+    console.log("Current todo array:", todo);
+    console.log("Todo item in array:", todo[existingTodoIndex]);
+  } else {
+    console.error("Selected todo item not found in the todo list.");
+  }
+}
     function saveEditedTodo(todoItemId) {
       const editedTodoIndex = todo.findIndex((item) => item.id === todoItemId);
       

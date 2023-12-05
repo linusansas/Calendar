@@ -23,7 +23,6 @@ function tick() {
 
   currentTimeElement.textContent = timeString;
 
-  defaultDate();
 }
 function defaultDate() {
   const defaultDate = new Date(); // You can set a specific default date if needed
