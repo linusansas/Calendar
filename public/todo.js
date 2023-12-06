@@ -22,7 +22,7 @@ function saveValues() {
 function createTodoElement(todoData, customId) {
   const newTodo = document.createElement("li");
   const firstTodoItem = todoData.todos && todoData.todos.length > 0 ? todoData.todos[0] : {};
-  const id = customId || (firstTodoItem.id || ""); // Use customId if provided, otherwise use firstTodoItem.id
+  const id = customId || (firstTodoItem.id || "");
   const todoText = `
     <span>Title: ${firstTodoItem.title}</span><br>
     <span>Date: ${firstTodoItem.date}</span><br>
@@ -49,15 +49,12 @@ function createTodo() {
   const userInputData = saveValues();
   const selectedDate = userInputData.date;
 
-  // Retrieve todos from localStorage
   let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
-  // Assign the id and increment the nextTodoId for the next item
   const newTodo = { ...userInputData, id: nextTodoId.toString() };
   todos.push(newTodo);
-  nextTodoId++;  // Increment nextTodoId for the next todo
+  nextTodoId++;
 
-  // Store the updated todos
   localStorage.setItem("todos", JSON.stringify(todos));
 
   updateTodoCount(selectedDate);
@@ -65,7 +62,6 @@ function createTodo() {
 
   clearInputFields();
 
-  // Update the todo list
   updateTodoList();
 }
 
@@ -76,10 +72,8 @@ function saveAndCreateTodo() {
   const todoItemId = dateInputField.getAttribute("data-todo-id");
 
   if (todoItemId && !dateInputField.disabled) {
-    // Editing mode, save the edited todo
     saveEditedTodo();
   } else {
-    // Creating a new todo
     const userInputData = saveValues();
     const id = nextTodoId.toString();
     nextTodoId++;
@@ -89,20 +83,16 @@ function saveAndCreateTodo() {
     const todosForSelectedDateIndex = todos.findIndex((todoItem) => todoItem.date === selectedDate);
 
     if (todosForSelectedDateIndex !== -1) {
-      // If todos array exists for the selected date
       const existingTodoIndex = todos[todosForSelectedDateIndex].todos.findIndex((item) => item.id === id);
 
       if (existingTodoIndex !== -1) {
-        // If todo with the same ID exists, create a new one with a unique ID
         const uniqueId = getNextUniqueId();
         newTodo.setAttribute("data-todo-id", uniqueId);
         todos[todosForSelectedDateIndex].todos.push({ ...userInputData, id: uniqueId });
       } else {
-        // Add the new todo to the existing todos
         todos[todosForSelectedDateIndex].todos.push({ ...userInputData, id });
       }
     } else {
-      // Add a new entry for the date
       todos.push({ date: selectedDate, todos: [{ ...userInputData, id }] });
     }
 
@@ -116,18 +106,15 @@ function saveAndCreateTodo() {
     console.log(todos)
   }
 
-  // Update the todo list for the selected date
   updateTodoList(selectedDate);
 
   editingTodoIndex = -1;
   originalTodo = null;
 
-  // Ensure that edit mode is exited
   exitEditMode();
 }
 
 function getNextUniqueId() {
-  // This function generates a unique ID for a new todo
   return (nextTodoId++).toString();
 }
 
@@ -137,13 +124,10 @@ function deleteTodo(todoItem) {
   console.log("Deleting Todo with ID:", todoItemId);
   console.log("Stored Todos:", todos);
 
-  // Find the index of the todo item with the matching ID
   const todoIndex = todos.findIndex((item) => {
-    // Check if the todo item has the nested structure and matches the ID
     if (item.id === todoItemId) {
       return true;
     } else if (item.todos && Array.isArray(item.todos)) {
-      // Check nested todos for the matching ID
       return item.todos.some((nestedItem) => nestedItem.id === todoItemId);
     }
 
@@ -151,7 +135,6 @@ function deleteTodo(todoItem) {
   });
 
   if (todoIndex !== -1) {
-    // Splice the array to remove the todo item at the found index
     const deletedTodo = todos.splice(todoIndex, 1)[0];
 
     console.log("Deleted Todo:", deletedTodo);
@@ -162,7 +145,6 @@ function deleteTodo(todoItem) {
     updateTodoCount(deletedTodo.date);
     updateCalendarCell(deletedTodo.date);
 
-    // ... (rest of the function)
   } else {
     console.error("Todo item not found in storedTodos.");
   }
@@ -194,7 +176,6 @@ function allowUserEdit(todoItem) {
     const userInputData = todos[existingTodoIndex];
     document.getElementById("titleInputField").value = userInputData.title;
     
-    // Check if the time exists before setting the value
     if (userInputData.time) {
       document.getElementById("timeInputField").value = userInputData.time;
     }
@@ -219,10 +200,8 @@ function saveEditedTodo() {
     const editedTodoData = saveValues();
     editedTodo.id = todoItemId;
 
-    // Update the properties of the found todo
     Object.assign(editedTodo, editedTodoData);
 
-    // Update the displayed element if needed
     const editedTodoElement = createTodoElement(editedTodo, todoItemId);
     const existingTodoElement = document.querySelector(`[data-todo-id="${todoItemId}"]`);
 
@@ -241,7 +220,6 @@ function saveEditedTodo() {
 
     clearInputFields();
 
-    // Reset editing state
     editingTodoIndex = -1;
     originalTodo = null;
   } else {
@@ -250,11 +228,9 @@ function saveEditedTodo() {
 }
 function storeTodo(callback) {
   if (todos && Array.isArray(todos)) {
-    // Check if there are non-empty todos
     const hasNonEmptyTodo = todos.some(item =>
       item.date !== "" || item.time !== "" || item.title !== "" || item.textarea !== "");
 
-    // Store todos in localStorage
     let todoString = JSON.stringify(todos);
     localStorage.setItem("todos", todoString);
 
@@ -262,7 +238,6 @@ function storeTodo(callback) {
       callback();
     }
   } else {
-    // Handle the case where todos is null or not an array
     console.error("Invalid or uninitialized todos");
   }
 }
@@ -271,9 +246,9 @@ function storeTodo(callback) {
 
 function retrieveTodo() {
   let retString = localStorage.getItem("todos");
-  todos = JSON.parse(retString) || []; // Ensure todos is always an array
+  todos = JSON.parse(retString) || [];
 
-  console.log("Retrieved todos:", todos); // Add this line for debugging
+  console.log("Retrieved todos:", todos);
 
   if (Array.isArray(todos) && todos.length > 0) {
     const todoListElement = document.getElementById("todoList");
@@ -288,7 +263,6 @@ function retrieveTodo() {
 function injectTodosForSelectedDate(selectedDate) {
   const todoListElement = document.getElementById("todoList");
 
-  // Clear the existing todoList items
   while (todoListElement.firstChild) {
     todoListElement.removeChild(todoListElement.firstChild);
   }
@@ -297,11 +271,9 @@ function injectTodosForSelectedDate(selectedDate) {
     const todosForSelectedDate = todos.filter((todoItem) => todoItem.date === selectedDate);
 
     if (todosForSelectedDate.length > 0) {
-      // Set the value of the date input field to the selected date
       document.getElementById("dateInputField").value = selectedDate;
 
       todosForSelectedDate.forEach((todoItem) => {
-        // Pass the target date to the createTodoElement function
         const injectTodo = createTodoElement(todoItem, todoItem.id, selectedDate);
         if (injectTodo) {
           todoListElement.appendChild(injectTodo);
@@ -402,13 +374,10 @@ function exitEditMode() {
 function updateTodoList(selectedDate) {
   const todoListElement = document.getElementById("todoList");
 
-  // Clear the existing todos in the list
   todoListElement.innerHTML = '';
 
-  // Get the todos for the selected date
   const todosForSelectedDate = todos.filter((todoItem) => todoItem.date === selectedDate);
 
-  // Inject todos into the list
   todosForSelectedDate.forEach((todoItem) => {
     const injectTodo = createTodoElement(todoItem, todoItem.id);
     todoListElement.appendChild(injectTodo);
@@ -417,7 +386,6 @@ function updateTodoList(selectedDate) {
 
 
 function findTodoById(todoItemId) {
-  // Recursive function to find a todo by ID in the nested todos structure
   function findTodo(todoList) {
     for (const todo of todoList) {
       if (todo.id === todoItemId) {
@@ -432,6 +400,5 @@ function findTodoById(todoItemId) {
     return null;
   }
 
-  // Call the recursive function starting from the top-level todos
   return findTodo(todos);
 }

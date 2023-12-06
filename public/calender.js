@@ -11,7 +11,6 @@ function createCalendar(year, month) {
   const firstDay = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
  
-  // Adjusting the starting index to make Monday the first day of the week
   let firstDayIndex = (firstDay.getDay() + 6) % 7;
  
   const monthNames = [
@@ -36,7 +35,6 @@ function createCalendar(year, month) {
   nextBtn.onclick = nextMonth;
   previousBtn.onclick = prevMonth;
  
-  // Add empty div elements to represent the days of the previous month
   for (let i = 0; i < firstDayIndex; i++) {
     const dayElement = document.createElement("p");
     dayElement.className = "day";
@@ -47,11 +45,9 @@ function createCalendar(year, month) {
     textElement.setAttribute("data-cy", "calendar-cell-date")
   }
  
-  // Add div elements for each day in the current month
   for (let i = 1; i <= daysInMonth; i++) {
     const dayElement = document.createElement("div");
     dayElement.className = "day";
-    // Add the attribute for the class "day"
     dayElement.setAttribute("data-cy", "calendar-cell");
     dayElement.setAttribute("onclick","selectDayTodo(event)");
 
@@ -61,7 +57,6 @@ function createCalendar(year, month) {
     textElement.setAttribute("onclick","selectDayTodo(event)");
     dayElement.appendChild(textElement);
 
-    // Add the "today" class to the current day
     if (
       i === new Date().getDate() &&
       year === new Date().getFullYear() &&
@@ -69,8 +64,6 @@ function createCalendar(year, month) {
     ) {
       dayElement.classList.add("today");
     }
-
-    // Only create and append the todoCountElement if there is content
     const todoCountElement = document.createElement("div");
     todoCountElement.setAttribute("data-cy", "calendar-cell-todos");
     todoCountElement.setAttribute("onclick","selectDayTodo(event)");
@@ -85,9 +78,6 @@ function createCalendar(year, month) {
   }
 }
  
-/**
-* Updates the calendar to reflect the current month and year.
-*/
 function updateCalendar() {
   createCalendar(currentYear, currentMonth);
 }
@@ -134,28 +124,21 @@ function prevMonth() {
 // }
 
 function handleDateChange() {
-  // Get the selected date from the input field
   const selectedDate = document.getElementById("dateInputField").value;
 
   if (!selectedDate) {
-    // If no date is selected, clear the todo list and return
     clearTodoList();
     return;
   }
 
-  // Parse the selected date
   const parsedDate = new Date(selectedDate);
 
-  // Update the current month and year based on the selected date
   currentMonth = parsedDate.getMonth();
   currentYear = parsedDate.getFullYear();
 
-  // Get and display the day name
   getDayName(parsedDate.getDate(), currentMonth, currentYear);
 
-  // Update the calendar
   updateCalendar();
 
-  // Optionally, update the todo list for the selected date
   updateTodoList(selectedDate);
 }

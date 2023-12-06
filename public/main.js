@@ -11,6 +11,3 @@ function main() {
 function clearLocalStorage() {
   localStorage.clear();
 }
-function clearLocalStorage() {
-  localStorage.clear();
-}
