@@ -47,9 +47,6 @@ function createTodoElement(todoData, customId) {
 
 function createTodo() {
   const userInputData = saveValues();
-  const selectedDate = userInputData.date;
-
-  let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
   const newTodo = { ...userInputData, id: nextTodoId.toString() };
   todos.push(newTodo);
@@ -57,11 +54,8 @@ function createTodo() {
 
   localStorage.setItem("todos", JSON.stringify(todos));
 
-  updateTodoCount(selectedDate);
-  updateCalendarCell(selectedDate);
-
+  updateCalendar();
   clearInputFields();
-
   updateTodoList();
 }
 
@@ -98,8 +92,7 @@ function saveAndCreateTodo() {
 
     localStorage.setItem("todos", JSON.stringify(todos));
     injectTodosForSelectedDate(selectedDate);
-    updateTodoCount(userInputData.date);
-    updateCalendarCell(userInputData.date);
+    updateCalendar();
 
     clearInputFields();
 
@@ -142,8 +135,7 @@ function deleteTodo(todoItem) {
     localStorage.setItem("todos", JSON.stringify(todos));
     todoItem.remove();
 
-    updateTodoCount(deletedTodo.date);
-    updateCalendarCell(deletedTodo.date);
+    updateCalendar()
 
   } else {
     console.error("Todo item not found in storedTodos.");
@@ -212,12 +204,8 @@ function saveEditedTodo() {
     }
 
     storeTodo();
-
-    updateTodoCount(editedTodo.date);
-    updateCalendarCell(editedTodo.date);
-
+    updateCalendar();
     updateTodoList();
-
     clearInputFields();
 
     editingTodoIndex = -1;

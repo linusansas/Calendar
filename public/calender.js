@@ -64,13 +64,17 @@ function createCalendar(year, month) {
     ) {
       dayElement.classList.add("today");
     }
-    const todoCountElement = document.createElement("div");
-    todoCountElement.setAttribute("data-cy", "calendar-cell-todos");
-    todoCountElement.setAttribute("onclick","selectDayTodo(event)");
     
-    updateTodoCountForCalendarCell(todoCountElement, currentYear, currentMonth, i);
-
-    if (todoCountElement.textContent.trim() !== "") {
+    const cellDate = new Date(year, month, i + 1);
+    const cellDateString = cellDate.toISOString().split("T")[0];
+    console.log(cellDateString, todos);
+    const todosForDate = todos.filter((todoItem) => todoItem.date === cellDateString);
+    
+    if (todosForDate.length) {
+      const todoCountElement = document.createElement("div");
+      todoCountElement.setAttribute("data-cy", "calendar-cell-todos");
+      todoCountElement.setAttribute("onclick","selectDayTodo(event)");
+      todoCountElement.textContent = todosForDate.length;
       dayElement.appendChild(todoCountElement);
     }
 

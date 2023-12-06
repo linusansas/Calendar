@@ -54,4 +54,5 @@ function selectDayTodo(event) {
   updateTodoList(selectedDate);
 
   console.log(todosForSelectedDate);
+  }
 }
