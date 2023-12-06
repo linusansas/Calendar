@@ -6,3 +6,6 @@ function main() {
   updateCalendar();
   retrieveTodo();
 }
+function clearLocalStorage() {
+  localStorage.clear();
+}

@@ -48,31 +48,31 @@ function createTodo() {
   const userInputData = saveValues();
   const todoList = document.getElementById("todoList");
   const id = new Date().getTime().toString();
-  const newTodo = createTodoElement(userInputData, id);
 
-  const dateInputField = document.getElementById("dateInputField");
-  if (dateInputField.disabled) {
-    const existingTodoId = dateInputField.getAttribute("data-todo-id");
-    const existingTodo = todoList.querySelector(`[data-todo-id="${existingTodoId}"]`);
-    if (existingTodo) {
-      existingTodo.replaceWith(newTodo);
+  // Check if a todo with the same ID already exists
+  const existingTodo = todoList.querySelector(`[data-todo-id="${id}"]`);
 
-      const existingTodoIndex = todo.findIndex((item) => item.id === existingTodoId);
-      if (existingTodoIndex !== -1) {
-        todo[existingTodoIndex] = { ...userInputData, id: existingTodoId };
-      }
+  if (existingTodo) {
+    // Update the existing todo
+    existingTodo.innerHTML = createTodoElement(userInputData, id).innerHTML;
+
+    // Update the todo array in memory
+    const existingTodoIndex = todo.findIndex((item) => item.id === id);
+    if (existingTodoIndex !== -1) {
+      todo[existingTodoIndex] = { ...userInputData, id: id };
     }
   } else {
-    console.log("New Todo:", newTodo);
+    // If the todo doesn't exist, create a new one
+    const newTodo = createTodoElement(userInputData, id);
     todoList.appendChild(newTodo);
     todo.push({ ...userInputData, id: id });
   }
 
+  // Store todos in local storage
   storeTodo();
 
   updateTodoCount(userInputData.date);
   updateCalendarCell(userInputData.date);
-
   clearInputFields();
 }
 
@@ -249,26 +249,43 @@ function allowUserEdit(todoItem) {
     function injectTodosForSelectedDate() {
       const todoList = document.getElementById("todoList");
       const selectedDate = document.getElementById("dateInputField").value;
-  
-      while (todoList.firstChild) {
-        todoList.removeChild(todoList.firstChild);
-      }
     
       if (selectedDate) {
         const storedTodos = JSON.parse(localStorage.getItem("todos")) || [];
     
-        const todosForSelectedDate = storedTodos.filter((todoItem) => {
-          return todoItem.date === selectedDate;
-        });
+        // Iterate over existing todo elements
+        for (const todoItem of todoList.children) {
+          const todoItemId = todoItem.getAttribute("data-todo-id");
     
-        if (todosForSelectedDate.length > 0) {
-          todosForSelectedDate.forEach((todoItem) => {
-            const injectTodo = createTodoElement(todoItem);
-            todoList.appendChild(injectTodo);
-          });
+          // Find the corresponding todo in storedTodos
+          const storedTodo = storedTodos.find((item) => item.id === todoItemId);
+    
+          if (storedTodo) {
+            // Update the existing todo element with the new data
+            const updatedTodoElement = createTodoElement(storedTodo, todoItemId);
+            todoItem.innerHTML = updatedTodoElement.innerHTML;
+          } else {
+            // If the todo is not found in storedTodos, remove it from the DOM
+            todoItem.remove();
+          }
+        }
+    
+        // Add new todos that are in storedTodos but not in the current DOM
+        for (const storedTodo of storedTodos) {
+          const todoItemId = storedTodo.id;
+    
+          // Check if the todo with this ID is already in the DOM
+          const existingTodo = todoList.querySelector(`[data-todo-id="${todoItemId}"]`);
+    
+          if (!existingTodo) {
+            // Create and append the new todo
+            const newTodo = createTodoElement(storedTodo, todoItemId);
+            todoList.appendChild(newTodo);
+          }
         }
       }
     }
+    
     
     function clearTodoList() {
       const todoList = document.getElementById("todoList");

@@ -40,7 +40,6 @@ function getDayName(day, month, year) {
   currentDayName.textContent = currentDayString;
 }
 function selectDayTodo(event) {
-
   const selectedDay = event.target.textContent.trim();
   const selectedMonth = currentMonth;
   const selectedYear = currentYear;
@@ -52,7 +51,18 @@ function selectDayTodo(event) {
   currentMonth = selectedMonth;
   currentYear = selectedYear;
 
-  updateCalendar();
+  const todoList = document.getElementById("todoList");
+
+  // Hide the todo items by setting their display property to "none"
+  for (const todoItem of todoList.children) {
+    todoItem.style.display = "none";
+  }
+
+  // Inject todos for the selected date
   injectTodosForSelectedDate();
+
+  // Optionally, you can call retrieveTodo if needed
+
+  updateCalendar();
   console.log();
 }
