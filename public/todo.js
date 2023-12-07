@@ -327,27 +327,21 @@ function clearInputFields() {
 function updateTodoList(selectedDate) {
    const todoListElement = document.getElementById("todoList");
 
+   // Clear the existing todo list
+   todoListElement.innerHTML = "";
+
    // Get the existing todos for the selected date
    const existingTodos = todos.filter(
       (todoItem) => todoItem.date === selectedDate
    );
 
-   // Append the existing todos
+   // Append the updated todos
    existingTodos.forEach((todoItem) => {
       const injectTodo = createTodoElement(todoItem, todoItem.id);
       todoListElement.appendChild(injectTodo);
    });
-
-   // Append the new todo if there is any
-   const newTodo = todos.find(
-      (todoItem) =>
-         todoItem.date === selectedDate && !existingTodos.includes(todoItem)
-   );
-   if (newTodo) {
-      const todoElement = createTodoElement(newTodo, newTodo.id);
-      todoListElement.appendChild(todoElement);
-   }
 }
+
 
 function findTodoById(todoItemId) {
    function findTodo(todoList) {

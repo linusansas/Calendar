@@ -1,12 +1,15 @@
 function openEditModal() {
     const editModal = document.getElementById("editModal");
     editModal.style.display = "block";
-  
+
+    const dateInput = document.getElementById("dateInputField");
     const titleInput = document.getElementById("editTitle");
     const timeInput = document.getElementById("editTime");
     const textareaInput = document.getElementById("editTextarea");
+    
   
     const todoToEdit = findTodoById(editingTodoId); // Use findTodoById to get the todo by id
+    dateInput.value = todoToEdit.date;
     titleInput.value = todoToEdit.title;
     timeInput.value = todoToEdit.time || "";
     textareaInput.value = todoToEdit.textarea;
@@ -18,7 +21,9 @@ function closeEditModal() {
 }
 
 function allowUserEdit(todoItem) {
+
     // Populate modal fields with todoItem data
+    document.getElementById("dateInputField");
     document.getElementById("editTitle").value = todoItem.title;
     document.getElementById("editTime").value = todoItem.time || "";
     document.getElementById("editTextarea").value = todoItem.textarea || "";
@@ -26,18 +31,26 @@ function allowUserEdit(todoItem) {
     // Set the editingTodoId to the id of the todoItem
     editingTodoId = todoItem.id;
 
+    // Set the date input field to the date of the selected todoItem
+    const dateInputField = document.getElementById("dateInputField");
+    dateInputField.value = todoItem.date;
+
     // Show the edit modal
     openEditModal();
 }
 
+
 function saveEditedTodo() {
     // Retrieve values from the modal
+    const editedDate = document.getElementById("editDate").value;
     const editedTitle = document.getElementById("editTitle").value;
     const editedTime = document.getElementById("editTime").value;
     const editedTextarea = document.getElementById("editTextarea").value;
+    
   
     // Update the todo data
     const editedTodo = findTodoById(editingTodoId); // Use findTodoById to get the todo by id
+    editedDate.date = editedDate;
     editedTodo.title = editedTitle;
     editedTodo.time = editedTime;
     editedTodo.textarea = editedTextarea;
