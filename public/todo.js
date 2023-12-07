@@ -33,7 +33,7 @@ function createTodoElement(todoData) {
 
    const deleteButton = document.createElement("button");
    deleteButton.textContent = "Delete";
-   deleteButton.onclick = () => deleteTodo(todoData.date);
+   deleteButton.onclick = () => deleteTodo(todoData.date, todoData.id);
    deleteButton.setAttribute("data-cy", "delete-todo-button");
    newTodo.appendChild(deleteButton);
 
@@ -49,7 +49,9 @@ function createTodoElement(todoData) {
 function createTodo() {
    const userInputData = saveValues();
 
-   const newTodo = { ...userInputData };
+   const newTodoId = getNextUniqueId();
+   const newTodo = { ...userInputData, id: newTodoId };
+
    todos.push(newTodo);
 
    localStorage.setItem("todos", JSON.stringify(todos));
@@ -137,18 +139,33 @@ function getNextUniqueId() {
   return (nextTodoId++).toString();
 }
  */
-
-function deleteTodo(date) {
-   const todoIndex = todos.findIndex((todoItem) => todoItem.date === date);
+function deleteTodo(date, todoId) {
+   const todoIndex = todos.findIndex(
+      (todoItem) => todoItem.date === date && todoItem.id === todoId
+   );
 
    if (todoIndex !== -1) {
       todos.splice(todoIndex, 1);
       localStorage.setItem("todos", JSON.stringify(todos));
       updateCalendar();
+
+      // Clear the entire todoList
+      clearTodoList();
+
+      // Re-render todos for the specific date
+      const todosForSelectedDate = todos.filter(
+         (todoItem) => todoItem.date === date
+      );
+      todosForSelectedDate.forEach((todoItem) => {
+         const todoElement = createTodoElement(todoItem);
+         document.getElementById("todoList").appendChild(todoElement);
+      });
    } else {
-      console.error("Todo not found for the given date:", date);
+      console.error("Todo not found for the given date and id:", date, todoId);
    }
 }
+
+
 
 
 function allowUserEdit(todoItem) {
@@ -431,4 +448,9 @@ function selectDayTodo(event) {
    }
 
    console.log(todos);
+}
+
+
+function getNextUniqueId() {
+   return (todos.length + 1).toString();
 }
