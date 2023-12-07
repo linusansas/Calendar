@@ -57,8 +57,11 @@ function createTodo() {
   updateCalendar();
   clearInputFields();
   updateTodoList();
-}
+  injectTodosForSelectedDate();
 
+  console.log(todos);
+}
+/* 
 
 function saveAndCreateTodo() {
   const dateInputField = document.getElementById("dateInputField");
@@ -110,7 +113,7 @@ function saveAndCreateTodo() {
 function getNextUniqueId() {
   return (nextTodoId++).toString();
 }
-
+ */
 
 function deleteTodo(todoItem) {
   const todoItemId = todoItem.getAttribute("data-todo-id");
@@ -232,7 +235,7 @@ function storeTodo(callback) {
 
 
 
-function retrieveTodo() {
+/* function retrieveTodo() {
   let retString = localStorage.getItem("todos");
   todos = JSON.parse(retString) || [];
 
@@ -246,7 +249,7 @@ function retrieveTodo() {
     });
   }
 }
-
+ */
 
 function injectTodosForSelectedDate(selectedDate) {
   const todoListElement = document.getElementById("todoList");
@@ -279,9 +282,9 @@ function clearTodoList() {
   }
 
   injectTodosForSelectedDate();
-  retrieveTodo();
+/*   retrieveTodo(); */
 }
-function updateTodoCount(date) {
+/* function updateTodoCount(date) {
   const storedTodos = JSON.parse(localStorage.getItem("todos")) || [];
   const todosForDate = storedTodos.filter((todoItem) => todoItem.date === date);
   const todoCount = todosForDate.length;
@@ -290,9 +293,9 @@ function updateTodoCount(date) {
   todoCounts[date] = todoCount;
   localStorage.setItem("todoCounts", JSON.stringify(todoCounts));
 }
+ */
 
-
-function updateCalendarCell(date) {
+/* function updateCalendarCell(date) {
   const calendarCells = document.querySelectorAll('[data-cy="calendar-cell-date"]');
   const formattedDate = new Date(date).getDate();
 
@@ -315,15 +318,15 @@ function updateCalendarCell(date) {
       }
     }
   });
-}  
+}   */
 
-function updateTodoCountForCalendarCell(todoCountElement, year, month, day) {
+/* function updateTodoCountForCalendarCell(todoCountElement, year, month, day) {
   const date = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   const todoCounts = JSON.parse(localStorage.getItem("todoCounts")) || {};
   const todoCount = todoCounts[date] || 0;
   todoCountElement.textContent = todoCount > 0 ? todoCount.toString() : "";
 }
-
+ */
 function clearInputFields() {
   const dateInputField = document.getElementById("dateInputField");
   const timeInputField = document.getElementById("timeInputField");
@@ -389,4 +392,36 @@ function findTodoById(todoItemId) {
   }
 
   return findTodo(todos);
+}
+
+
+function selectDayTodo(event) {
+  const selectedDayElement = event.target.closest('.day');
+  if (!selectedDayElement) return;
+
+  const selectedDayId = selectedDayElement.id;
+  const selectedDayNumber = parseInt(selectedDayId.replace("day", ""), 10);
+
+  const selectedMonth = currentMonth;
+  const selectedYear = currentYear;
+  const selectedDate = `${selectedYear}-${(selectedMonth + 1).toString().padStart(2, '0')}-${selectedDayNumber.toString().padStart(2, '0')}`;
+
+  const dateInputField = document.getElementById("dateInputField");
+  dateInputField.value = selectedDate;
+
+  getDayName(selectedDayNumber, selectedMonth, selectedYear);
+  currentMonth = selectedMonth;
+  currentYear = selectedYear;
+
+  updateCalendar();
+
+  const todosForSelectedDate = todos.filter((todoItem) => todoItem.date === selectedDate);
+  if (todosForSelectedDate.length > 0) {
+    dateInputField.setAttribute("data-todo-id", todosForSelectedDate[0].id);
+  } else {
+    dateInputField.setAttribute("data-todo-id", "");
+
+    updateTodoList(selectedDate);
+  }
+  console.log(todos)
 }

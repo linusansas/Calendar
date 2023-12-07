@@ -50,6 +50,7 @@ function createCalendar(year, month) {
     dayElement.className = "day";
     dayElement.setAttribute("data-cy", "calendar-cell");
     dayElement.setAttribute("onclick","selectDayTodo(event)");
+    dayElement.setAttribute("id", `day${i}`);
 
     const textElement = document.createElement("div");
     textElement.textContent = i;
@@ -67,13 +68,11 @@ function createCalendar(year, month) {
     
     const cellDate = new Date(year, month, i + 1);
     const cellDateString = cellDate.toISOString().split("T")[0];
-    console.log(cellDateString, todos);
     const todosForDate = todos.filter((todoItem) => todoItem.date === cellDateString);
     
     if (todosForDate.length) {
       const todoCountElement = document.createElement("div");
       todoCountElement.setAttribute("data-cy", "calendar-cell-todos");
-      todoCountElement.setAttribute("onclick","selectDayTodo(event)");
       todoCountElement.textContent = todosForDate.length;
       dayElement.appendChild(todoCountElement);
     }
@@ -129,11 +128,6 @@ function prevMonth() {
 
 function handleDateChange() {
   const selectedDate = document.getElementById("dateInputField").value;
-
-  if (!selectedDate) {
-    clearTodoList();
-    return;
-  }
 
   const parsedDate = new Date(selectedDate);
 
