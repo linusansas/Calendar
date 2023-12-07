@@ -139,6 +139,6 @@ function handleDateChange() {
    getDayName(parsedDate.getDate(), currentMonth, currentYear);
 
    updateCalendar();
-
-   updateTodoList(selectedDate);
+   clearTodoList();
+   updateTodoList();
 }

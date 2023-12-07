@@ -139,18 +139,17 @@ function getNextUniqueId() {
  */
 
 function deleteTodo(date) {
-   const todosForDate = todos.filter((todoItem) => todoItem.date === date);
+   const todoIndex = todos.findIndex((todoItem) => todoItem.date === date);
 
-   todosForDate.forEach((todoItem) => {
-      const todoIndex = todos.indexOf(todoItem);
-      if (todoIndex !== -1) {
-         todos.splice(todoIndex, 1);
-      }
-   });
-
-   localStorage.setItem("todos", JSON.stringify(todos));
-   updateCalendar();
+   if (todoIndex !== -1) {
+      todos.splice(todoIndex, 1);
+      localStorage.setItem("todos", JSON.stringify(todos));
+      updateCalendar();
+   } else {
+      console.error("Todo not found for the given date:", date);
+   }
 }
+
 
 function allowUserEdit(todoItem) {
    const dateInputField = document.getElementById("dateInputField");
