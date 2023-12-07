@@ -25,6 +25,7 @@
       <script src="./calender.js"></script>
       <script src="./welcome-segment.js"></script>
       <script src="./todo.js"></script>
+      <script src="./edit.js"></script>
    </head>
    <body>
       <header>
@@ -110,6 +111,22 @@
                   Delete
                </button>
             </div>
+         </div>
+      </div>
+      <div id="editModal" class="modal">
+         <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Edit Todo</h2>
+            <label for="editTitle">Title:</label>
+            <input type="text" id="editTitle">
+            <br>
+            <label for="editTime">Time:</label>
+            <input type="text" id="editTime">
+            <br>
+            <label for="editTextarea">Textarea:</label>
+            <textarea id="editTextarea"></textarea>
+            <br>
+            <button onclick="saveEditedTodo()">Save Changes</button>
          </div>
       </div>
    </body>

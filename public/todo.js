@@ -40,7 +40,7 @@ function createTodoElement(todoData) {
    const editButton = document.createElement("button");
    editButton.textContent = "Edit";
    editButton.setAttribute("data-cy", "edit-todo-button");
-   editButton.onclick = () => allowUserEdit(newTodo);
+   editButton.onclick = () => allowUserEdit(todoData);
    newTodo.appendChild(editButton);
 
    return newTodo;
@@ -163,53 +163,9 @@ function deleteTodo(date, todoId) {
    } else {
       console.error("Todo not found for the given date and id:", date, todoId);
    }
-}
+} 
 
-
-
-
-function allowUserEdit(todoItem) {
-   const dateInputField = document.getElementById("dateInputField");
-   const todoItemId = todoItem.getAttribute("data-todo-id");
-   let existingTodoIndex = -1;
-
-   for (let i = 0; i < todos.length; i++) {
-      const topLevelTodo = todos[i];
-      if (topLevelTodo.id === todoItemId) {
-         existingTodoIndex = i;
-         break;
-      } else if (topLevelTodo.todos && Array.isArray(topLevelTodo.todos)) {
-         existingTodoIndex = topLevelTodo.todos.findIndex(
-            (nestedItem) => nestedItem.id === todoItemId
-         );
-         if (existingTodoIndex !== -1) {
-            break;
-         }
-      }
-   }
-
-   if (existingTodoIndex !== -1) {
-      editingTodoIndex = existingTodoIndex;
-      originalTodo = { ...todos[editingTodoIndex] };
-
-      const userInputData = todos[existingTodoIndex];
-      document.getElementById("titleInputField").value = userInputData.title;
-
-      if (userInputData.time) {
-         document.getElementById("timeInputField").value = userInputData.time;
-      }
-
-      document.getElementById("textareaInputField").value =
-         userInputData.textarea;
-
-      dateInputField.value = userInputData.date;
-      dateInputField.setAttribute("data-todo-id", todoItemId);
-   } else {
-      console.error("Selected todo item not found in the todo list.");
-   }
-}
-
-function saveEditedTodo() {
+/* function saveEditedTodo() {
    const dateInputField = document.getElementById("dateInputField");
    const todoItemId = dateInputField.getAttribute("data-todo-id");
 
@@ -242,7 +198,7 @@ function saveEditedTodo() {
    } else {
       console.error("Edited todo not found in the todo list.");
    }
-}
+} */
 function storeTodo(callback) {
    if (todos && Array.isArray(todos)) {
       const hasNonEmptyTodo = todos.some(
@@ -363,11 +319,11 @@ function clearInputFields() {
       console.error("textareaInputField not found in the DOM");
    }
 }
-function exitEditMode() {
+/* function exitEditMode() {
    const dateInputField = document.getElementById("dateInputField");
    dateInputField.disabled = false;
 }
-
+ */
 function updateTodoList(selectedDate) {
    const todoListElement = document.getElementById("todoList");
 
