@@ -9,7 +9,8 @@ function startClock() {
   setInterval(tick, 1000);
 }
 function tick() {
-  
+  defaultDate();
+  updateCalendar();
   const currentDate = new Date();
   const currentTimeElement = document.querySelector(".btn-clock");
   const hours = currentDate.getHours().toString().padStart(2, "0");
@@ -18,11 +19,14 @@ function tick() {
   const timeString = `${hours}:${minutes}:${seconds}`;
 
   currentTimeElement.textContent = timeString;
-
 }
 function defaultDate() {
   const defaultDate = new Date();
-  getDayName(defaultDate.getDate(), defaultDate.getMonth(), defaultDate.getFullYear());
+  getDayName(
+    defaultDate.getDate(),
+    defaultDate.getMonth(),
+    defaultDate.getFullYear()
+  );
 }
 
 function getDayName(day, month, year) {

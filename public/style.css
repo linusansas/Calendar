@@ -3,15 +3,16 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 :root {
   --color-primary-1: #191919;
-  --color-primary-2: #ffffff;
+  --color-primary-2: #f8cdda38;
   --color-secondary-1: #3b4d95;
   --color-primary-3: #e5e6f3;
   --color-white: #ffffff;
   --border-radius: 5px;
   --transition: all 0.3s ease-in-out;
-  --letter-spacing: 0.2rem;
+  --letter-spacing: 0.05rem;
   --font-family-1: "Raleway", sans-serif;
   --font-family-2: "Lato", sans-serif;
 
@@ -74,7 +75,7 @@ Container
 .container {
   display: flex;
   padding: 0;
-  height: 100%;
+  /* height: 100%; */
 }
 
 /*
@@ -85,7 +86,7 @@ Sidebar
 .sidebar {
   flex: 2;
   padding: 5px;
-  height: 100%;
+  /* height: 100%; */
 }
 .right-area {
   flex: 2;
@@ -94,32 +95,19 @@ Sidebar
   height: 100%;
 }
 
-
- .container-info {
+.container-info {
   position: relative;
-  background-color: var(--color-primary-2);
-  color: var(--color-secondary-1);
-  padding: 2rem;
+  color: var(--color-white);
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem;
   text-align: center;
   font-family: var(--font-family-2);
-  letter-spacing: 0;
-  height: 350px;
+  border-radius: var(--border-radius);
+  /* height: 350px; */
+  height: 95%;
   width: 100%;
-  margin: 1.5rem 1rem;
+  margin: 1.5rem 0.5rem;
 }
-
-.container-info::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  bottom: 15px;
-  right: 5px;
-  width: 50%;
-  top: 80%;
-  box-shadow: 0px 13px 10px black;
-  transform: rotate(5deg);
-} 
-
 
 /*
 ===============
@@ -159,16 +147,17 @@ Calendar Section
   gap: 5px;
 }
 .day {
+  position: relative;
   padding: 10px;
-  text-align: center;
+  text-align: left;
+  font-size: 1.3rem;
   border-radius: 0.2rem;
   transition: var(--transition);
   box-shadow: 2px 2px 2px 2px rgba(255, 255, 255, 0.2);
 }
 .day:hover {
-  background-color: rgba(229, 230, 243, 0.2);
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
-
+  background-color: rgba(229, 230, 243, 0.4);
   cursor: pointer;
 }
 .empty-day {
@@ -181,21 +170,24 @@ Calendar Section
   background-color: rgba(233, 193, 174, 0.4);
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
 }
-
+.weekend {
+  /* background-color: #bb95a09e; */
+  background: linear-gradient(to right, #f8cdda5e, #1d2b6466);
+  color: #1d2b64;
+  /* box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2); */
+}
 
 /*
 ===============
 Buttons
 ===============
 */
-.editButton {
-  display: flex;
-  justify-content: flex-end;
-}
 .btn {
   border: 2px solid transparent;
   border-radius: var(--border-radius);
-  background-color: var(--color-btn);
+  /* background-color: var(--color-btn); */
+  background-color: rgba(59, 77, 149, 0.6);
+
   color: var(--color-white);
   font-size: 1.3rem;
   padding: 0.5rem 1rem;
@@ -210,8 +202,7 @@ Buttons
   font-family: var(--font-family-1);
   cursor: pointer;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
-  margin: 0.5rem;
-  width: 100px;
+  width: 100%;
 }
 .btn-submit:active,
 .btn-delete:active {
@@ -238,33 +229,33 @@ Input Form
 */
 .input-form {
   width: 100%;
-  margin: 0.5rem auto;  
+  margin: 0.5rem auto;
 }
 
 input,
 textarea {
   width: 100%;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 0.5rem;
   background-color: var(--color-primary-3);
   border-radius: var(--border-radius);
-  font-size: 1rem;
   font-family: var(--font-family-2);
   line-height: 1.7rem;
   border: none;
+  /* box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4); */
 }
 
 input {
   color: var(--color-primary-1);
   border-radius: 5px;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   font-size: 1.2rem;
 }
 input::placeholder {
   font-family: "Montserrat", sans-serif;
   font-weight: 100;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: var(--color-primary-1);
 }
 textarea {
@@ -272,9 +263,9 @@ textarea {
 }
 
 .img-container {
-  height: 180px;
+  height: 220px;
   margin: 1rem auto;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
   border-radius: var(--border-radius);
 }
 .img-container img {
@@ -285,6 +276,114 @@ textarea {
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
 }
 
+/*
+===============
+Today's Activities Styles
+===============
+*/
+
+.sidebar {
+  overflow-y: hidden;
+}
+
+.container-info h3 {
+  margin: 1rem;
+}
+ul li {
+  list-style: none;
+}
+
+.activity-card {
+  position: relative;
+  margin-bottom: 1rem;
+  background-color: rgba(59, 77, 149, 0.6);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.activity-card .section {
+  margin-bottom: 1rem;
+}
+
+.activity-card .ellipsis {
+  color: var(--color-primary-3);
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.activity-card .textarea {
+  overflow-y: hidden;
+  max-height: 2em;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.activity-card .textarea.expanded {
+  max-height: none;
+}
+
+.activity-card .todo-title {
+  font-size: 1.3rem;
+}
+
+/* Style for date and time sections */
+.activity-card .dateField,
+.activity-card .timeField {
+  font-size: 0.8rem;
+  /* Add specific styles for date and time if needed */
+}
+
+/* Style for the textarea section */
+.activity-card .textarea {
+  overflow-y: auto;
+  max-height: 100px; /* Adjust as needed */
+}
+
+.activity-card .activity-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end; /* Align buttons to the right */
+}
+
+.activity-card button {
+  background-color: var(--color-primary-3);
+  border: none;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--border-radius);
+  color: var(--color-secondary-1);
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.activity-card button:hover {
+  background-color: rgba(162, 171, 208, 0.6);
+}
+
+.expandable-box {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--color-primary-1);
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 2;
+  width: 100%;
+}
+
+.activity-card:hover .expandable-box {
+  opacity: 1;
+}
 /*
 ===============
 Small Screens
@@ -302,6 +401,9 @@ Small Screens
     display: none;
   }
   .input-form {
+    max-width: 450px;
+  }
+  .btn-submit {
     max-width: 450px;
   }
   .btn-clock {
@@ -329,4 +431,22 @@ Small Screens
   .weekdays {
     font-size: 0.8rem;
   }
+}
+.todo-count {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  /* background-color: rgba(59, 77, 149, 0.6); */
+  background-color: var(--color-primary-3);
+  color: var(--color-secondary-1);
+  border-radius: var(--border-radius);
+  padding: 0.2rem 0.5rem;
+  font-size: 1.2rem;
+}
+.hidden {
+  display: none;
+}
+
+.edit-mode {
+  background-color: aqua;
 }
