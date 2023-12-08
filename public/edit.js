@@ -1,85 +1,55 @@
-function openEditModal() {
-    const editModal = document.getElementById("editModal");
-    editModal.style.display = "block";
-
-    const dateInput = document.getElementById("dateInputField");
-    const titleInput = document.getElementById("editTitle");
-    const timeInput = document.getElementById("editTime");
-    const textareaInput = document.getElementById("editTextarea");
-    
-  
-    const todoToEdit = findTodoById(editingTodoId); // Use findTodoById to get the todo by id
-    dateInput.value = todoToEdit.date;
-    titleInput.value = todoToEdit.title;
-    timeInput.value = todoToEdit.time || "";
-    textareaInput.value = todoToEdit.textarea;
-}
-
-function closeEditModal() {
-    const editModal = document.getElementById("editModal");
-    editModal.style.display = "none";
-}
-
-function allowUserEdit(todoItem) {
-
-    // Populate modal fields with todoItem data
-    document.getElementById("dateInputField");
-    document.getElementById("editTitle").value = todoItem.title;
-    document.getElementById("editTime").value = todoItem.time || "";
-    document.getElementById("editTextarea").value = todoItem.textarea || "";
-
-    // Set the editingTodoId to the id of the todoItem
-    editingTodoId = todoItem.id;
-
-    // Set the date input field to the date of the selected todoItem
+function allowUserEdit(todoData) {
+    // Get references to various DOM elements
     const dateInputField = document.getElementById("dateInputField");
-    dateInputField.value = todoItem.date;
+    const editButton = document.getElementById("editButton");
 
-    // Show the edit modal
-    openEditModal();
-}
+    // Check if the editButton exists
+    if (editButton) {
+        // Set values in the input fields based on todoData
+        dateInputField.value = todoData.date;
+        document.getElementById("timeInputField").value = todoData.time;
+        document.getElementById("titleInputField").value = todoData.title;
+        document.getElementById("textareaInputField").value = todoData.textarea;
 
+        // Set the data-edit-id attribute on the editButton with the todoData.id
+        editButton.setAttribute("data-edit-id", todoData.id);
 
-function saveEditedTodo() {
-    // Retrieve values from the modal
-    const editedDate = document.getElementById("editDate").value;
-    const editedTitle = document.getElementById("editTitle").value;
-    const editedTime = document.getElementById("editTime").value;
-    const editedTextarea = document.getElementById("editTextarea").value;
-    
-  
-    // Update the todo data
-    const editedTodo = findTodoById(editingTodoId); // Use findTodoById to get the todo by id
-    editedDate.date = editedDate;
-    editedTodo.title = editedTitle;
-    editedTodo.time = editedTime;
-    editedTodo.textarea = editedTextarea;
-  
-    // Save changes to local storage
-    storeTodo();
-  
-    // Update the calendar and todo list
-    updateCalendar();
-    updateTodoList();
-  
-    // Close the edit modal
-    closeEditModal();
-}
+        // Use the data-edit-id directly as the editId
+        const editId = editButton.getAttribute("data-edit-id");
 
-// Declare a global variable for storing the id of the todo being edited
-let editingTodoId = null;
+        // Now you can use editId instead of todoData.id in your code
+        // For example, you can use it to find the index in the todos array
+        const editingTodoIndex = todos.findIndex((todoItem) => todoItem.id === editId);
 
-function findTodoById(todoItemId) {
-    // Function to find a todo by its id
-    for (const todo of todos) {
-        if (todo.id === todoItemId) {
-            return todo;
-        } else if (todo.todos && Array.isArray(todo.todos)) {
-            const nestedTodo = findTodoById(todo.todos, todoItemId);
-            if (nestedTodo) {
-                return nestedTodo;
-            }
-        }
+        // Continue with the rest of your logic...
     }
-    return null;
+}
+function saveEditedTodo() {
+    // Get the edit ID from the edit button
+    const editId = document.getElementById("editButton").getAttribute("data-edit-id");
+
+    // Find the index of the todo item being edited
+    const editingTodoIndex = todos.findIndex((todoItem) => todoItem.id === editId);
+
+    // Get the edited todo data
+    const editedTodoData = saveValues();
+
+    if (editingTodoIndex !== -1) {
+        // Update the existing todo item with the edited data
+        todos[editingTodoIndex] = { ...todos[editingTodoIndex], ...editedTodoData };
+
+        // Store the updated todos
+        storeTodo();
+
+        // Update the UI
+        updateCalendar();
+        updateTodoList();
+        clearInputFields();
+
+        // Reset editing state
+        editingTodoIndex = -1;
+        originalTodo = null;
+    } else {
+        console.error("Edited todo not found in the todo list.");
+    }
 }
