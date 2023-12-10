@@ -55,7 +55,7 @@ function createCalendar(year, month) {
     const textElement = document.createElement("div");
     textElement.textContent = i;
     textElement.setAttribute("data-cy", "calendar-cell-date");
-    textElement.setAttribute("onclick", "selectDayTodo(event)");
+    // textElement.setAttribute("onclick", "selectDayTodo(event)");
     dayElement.appendChild(textElement);
 
     if (

@@ -10,7 +10,7 @@ function startClock() {
 }
 function tick() {
   defaultDate();
-  updateCalendar();
+  // updateCalendar();
   const currentDate = new Date();
   const currentTimeElement = document.querySelector(".btn-clock");
   const hours = currentDate.getHours().toString().padStart(2, "0");

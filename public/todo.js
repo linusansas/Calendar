@@ -57,6 +57,8 @@ function createTodo() {
   const editButton = document.getElementById("editButton");
   const editId = editButton ? editButton.getAttribute("data-edit-id") : null;
 
+  const saveButton = document.getElementById("saveButton");
+
   if (editId) {
     // Editing an existing todo
     const editingTodoIndex = todos.findIndex(
@@ -70,6 +72,9 @@ function createTodo() {
       updateCalendar();
       clearInputFields();
       updateTodoList();
+
+      // Change the textContent of the saveButton back to 'Save'
+      saveButton.textContent = "Save";
     } else {
       console.error("Todo not found for the given id:", editId);
     }
@@ -205,6 +210,7 @@ function findTodoById(todoItemId) {
 
 function selectDayTodo(event) {
   const selectedDayElement = event.target.closest(".day");
+  const activitiesDate = document.getElementById("activities");
   if (!selectedDayElement) return;
 
   const selectedDayId = selectedDayElement.id;
@@ -222,6 +228,8 @@ function selectDayTodo(event) {
   getDayName(selectedDayNumber, selectedMonth, selectedYear);
   currentMonth = selectedMonth;
   currentYear = selectedYear;
+
+  // activitiesDate.textContent = `Actitivities: ${selectedDate}`;
 
   clearTodoList();
 
