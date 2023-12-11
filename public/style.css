@@ -105,7 +105,7 @@ Sidebar
    border-radius: var(--border-radius);
    /* height: 350px; */
    height: 95%;
-   width: 100%;
+   width: 90%;
    margin: 1.5rem 0.5rem;
 }
 
@@ -133,6 +133,7 @@ Calendar Section
    margin-top: 1rem;
    display: flex;
    color: var(--color-white);
+   width: 100%;
 }
 
 .week-number {
@@ -385,9 +386,6 @@ Small Screens
    .right-area {
       order: 3;
    }
-   .container-info {
-      /*display: none;*/
-   }
    .img-container {
       display: none;
    }
@@ -423,6 +421,17 @@ Small Screens
       font-size: 0.8rem;
    }
 }
+
+@media (max-width: 370px) {
+   .grid-days {
+      grid-template-columns: repeat(7, 42px);
+      gap: 1px;
+   }
+   .container-info {
+      width: 95%;
+   }
+}
+
 .todo-count {
    position: absolute;
    bottom: 0.5rem;

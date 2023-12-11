@@ -20,6 +20,7 @@ function tick() {
 
   currentTimeElement.textContent = timeString;
 }
+
 function defaultDate() {
   const defaultDate = new Date();
   getDayName(
