@@ -208,28 +208,45 @@ function findTodoById(todoItemId) {
   return findTodo(todos);
 }
 
+let lastClickedDay = null;
+
 function selectDayTodo(event) {
   const selectedDayElement = event.target.closest(".day");
   const activitiesDate = document.getElementById("activities");
-  if (!selectedDayElement) return;
+  //if (!selectedDayElement) return;
 
-  const selectedDayId = selectedDayElement.id;
-  const selectedDayNumber = parseInt(selectedDayId.replace("day", ""), 10);
+  let selectedDate;
 
-  const selectedMonth = currentMonth;
-  const selectedYear = currentYear;
-  const selectedDate = `${selectedYear}-${(selectedMonth + 1)
-    .toString()
-    .padStart(2, "0")}-${selectedDayNumber.toString().padStart(2, "0")}`;
+  if (selectedDayElement) {
+    const selectedDayId = selectedDayElement.id;
+    const selectedDayNumber = parseInt(selectedDayId.replace("day", ""), 10);
+
+    const selectedMonth = currentMonth;
+    const selectedYear = currentYear;
+
+    selectedDate = `${selectedYear}-${(selectedMonth + 1)
+      .toString()
+      .padStart(2, "0")}-${selectedDayNumber.toString().padStart(2, "0")}`;
+
+    // Toggle behavior: if the same day is clicked again, show todos for the current day
+    if (selectedDate === lastClickedDay) {
+      selectedDate = new Date().toISOString().split("T")[0];
+      lastClickedDay = null;
+    } else {
+      lastClickedDay = selectedDate;
+    }
+  } else {
+    // No specific day clicked, use current day
+    selectedDate = new Date().toISOString().split("T")[0];
+    lastClickedDay = null;
+  }
 
   const dateInputField = document.getElementById("dateInputField");
-  dateInputField.value = selectedDate;
 
-  getDayName(selectedDayNumber, selectedMonth, selectedYear);
-  currentMonth = selectedMonth;
-  currentYear = selectedYear;
+  dateInputField.value = "";
+  //dateInputField.value = selectedDate;
 
-  // activitiesDate.textContent = `Actitivities: ${selectedDate}`;
+  activitiesDate.textContent = `Actitivities for: ${selectedDate}`;
 
   clearTodoList();
 
