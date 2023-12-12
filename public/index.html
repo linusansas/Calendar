@@ -24,13 +24,15 @@
     <script src="./main.js"></script>
     <script src="./calender.js"></script>
     <script src="./welcome-segment.js"></script>
+    <script src="./todo.js"></script>
+    <script src="./edit.js"></script>
   </head>
   <body>
     <header>
       <div class="header-center" data-cy="welcome-segment">
         <div id="current-day" class="btn btn-currentDay"><!-- JS --></div>
         <h1 class="month-name"><!-- JS --></h1>
-          <div class="month-container"> 
+        <!--<div class="month-container">-->
         <div class="arrows-container">
           <div class="arrow-left" data-cy="prev-month">
             <i id="previous-btn" class="fa-solid fa-chevron-left"></i>
@@ -46,9 +48,11 @@
 
     <div class="container">
       <aside class="sidebar">
-        <div class="container-info">
-          <h3>Today's Activities</h3>
-        </div> 
+        <div class="container-info" data-cy="todo-list">
+          <h3 id="activities">Activities</h3>
+          <br />
+          <ul id="todoList" data-cy="delete-todo-button"></ul>
+        </div>
       </aside>
       <main class="main-content">
         <div class="weekdays">
@@ -60,10 +64,9 @@
           <div>SAT</div>
           <div>SUN</div>
         </div>
-        <div class="calendar" >
+        <div class="calendar">
           <div class="week-number"></div>
-          <div class="grid-days" data-cy="calendar-body">
-          </div>
+          <div class="grid-days" data-cy="calendar-body"></div>
         </div>
       </main>
       <div class="right-area">
@@ -71,12 +74,35 @@
           <img class="month-img" src="" alt="month-image" />
         </div>
         <div class="input-form">
-          <input type="text" placeholder="Date" />
-          <input type="text" placeholder="Time" />
-          <input type="text" placeholder="Title" />
-          <textarea name="text" cols="4" rows="3"></textarea>
-          <button type="submit" class="btn btn-submit">Save</button>
-          <button type="submit" class="btn btn-delete">Delete</button>
+          <input
+            type="date"
+            placeholder="Date"
+            id="dateInputField"
+            data-cy="todo-date-input"
+            onchange="handleDateChange()"
+          />
+          <input type="time" placeholder="Time" id="timeInputField" />
+          <input
+            type="text"
+            placeholder="Title"
+            id="titleInputField"
+            data-cy="todo-title-input"
+          />
+          <textarea
+            name="text"
+            cols="4"
+            rows="3"
+            id="textareaInputField"
+          ></textarea>
+          <button
+            type="submit"
+            class="btn btn-submit"
+            onclick="createTodo();"
+            data-cy="save-todo-button"
+            id="saveButton"
+          >
+            Save
+          </button>
         </div>
       </div>
     </div>
