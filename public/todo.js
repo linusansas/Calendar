@@ -3,275 +3,246 @@ let todos = JSON.parse(localStorage.getItem("todos")) || [];
 let editingTodoIndex = -1;
 let originalTodo = null;
 
-function saveValues() {
-  const dateUserInput = document.getElementById("dateInputField").value;
-  const timeUserInput = document.getElementById("timeInputField").value;
-  const titleUserInput = document.getElementById("titleInputField").value;
-  const textareaUserInput = document.getElementById("textareaInputField").value;
+// User input storage
 
-  return {
-    date: dateUserInput,
-    time: timeUserInput,
-    title: titleUserInput,
-    textarea: textareaUserInput,
-  };
+function saveValues() {
+   const dateUserInput = document.getElementById("dateInputField").value;
+   const timeUserInput = document.getElementById("timeInputField").value;
+   const titleUserInput = document.getElementById("titleInputField").value;
+   const textareaUserInput =
+      document.getElementById("textareaInputField").value;
+
+   return {
+      date: dateUserInput,
+      time: timeUserInput,
+      title: titleUserInput,
+      textarea: textareaUserInput,
+   };
 }
 
-function createTodoElement(todoData) {
-  const newTodo = document.createElement("li");
-  newTodo.className = "activity-card";
+// Create and display todos with edit button, delete button and <li> text element
 
-  const todoText = `
+function createTodoElement(todoData) {
+   const newTodo = document.createElement("li");
+   newTodo.className = "activity-card";
+
+   const todoText = `
   <span class="dateField" >${todoData.date}</span><br>
   <span class="timeField"> ${todoData.time}</span><br>
   <span class="todo-title" >${todoData.title}</span><br>
     <span class="textarea">${todoData.textarea}</span>`;
 
-  newTodo.innerHTML = todoText;
+   newTodo.innerHTML = todoText;
 
-  // Actions Section
-  const actionsSection = document.createElement("div");
-  actionsSection.className = "activity-actions";
+   // Actions Section
+   const actionsSection = document.createElement("div");
+   actionsSection.className = "activity-actions";
 
-  const deleteButton = document.createElement("button");
-  deleteButton.setAttribute("data-cy", "delete-todo-button");
-  deleteButton.textContent = "Delete";
-  deleteButton.onclick = () => deleteTodo(todoData.date, todoData.id);
-  actionsSection.appendChild(deleteButton);
+   const deleteButton = document.createElement("button");
+   deleteButton.setAttribute("data-cy", "delete-todo-button");
+   deleteButton.textContent = "Delete";
+   deleteButton.onclick = () => deleteTodo(todoData.date, todoData.id);
+   actionsSection.appendChild(deleteButton);
 
-  const editButton = document.createElement("button");
-  editButton.textContent = "Edit";
-  editButton.setAttribute("data-cy", "edit-todo-button");
-  editButton.onclick = () => allowUserEdit(todoData);
-  editButton.setAttribute("data-edit-id", todoData.id);
-  actionsSection.appendChild(editButton);
-  editButton.setAttribute("id", "editButton");
+   const editButton = document.createElement("button");
+   editButton.textContent = "Edit";
+   editButton.setAttribute("data-cy", "edit-todo-button");
+   editButton.onclick = () => allowUserEdit(todoData);
+   editButton.setAttribute("data-edit-id", todoData.id);
+   actionsSection.appendChild(editButton);
+   editButton.setAttribute("id", "editButton");
 
-  newTodo.appendChild(actionsSection);
+   newTodo.appendChild(actionsSection);
 
-  return newTodo;
+   return newTodo;
 }
 
+// onclick function to edit, update and create todo to local storage
+
 function createTodo() {
-  const userInputData = saveValues();
-  const editButton = document.getElementById("editButton");
-  const editId = editButton ? editButton.getAttribute("data-edit-id") : null;
+   const userInputData = saveValues();
+   const editButton = document.getElementById("editButton");
+   const editId = editButton ? editButton.getAttribute("data-edit-id") : null;
 
-  const saveButton = document.getElementById("saveButton");
+   const saveButton = document.getElementById("saveButton");
 
-  if (editId) {
-    // Editing an existing todo
-    const editingTodoIndex = todos.findIndex(
-      (todoItem) => todoItem.id === editId
-    );
+   if (editId) {
+      const editingTodoIndex = todos.findIndex(
+         (todoItem) => todoItem.id === editId
+      );
 
-    if (editingTodoIndex !== -1) {
-      // Update the existing todo with the edited data
-      todos[editingTodoIndex] = { ...userInputData, id: editId };
+      if (editingTodoIndex !== -1) {
+         todos[editingTodoIndex] = { ...userInputData, id: editId };
+         localStorage.setItem("todos", JSON.stringify(todos));
+         updateCalendar();
+         clearInputFields();
+         updateTodoList();
+
+         saveButton.textContent = "Save";
+      } else {
+         console.error("Todo not found for the given id:", editId);
+      }
+   } else {
+      const newTodoId = getNextUniqueId();
+      const newTodo = { ...userInputData, id: newTodoId };
+
+      todos.push(newTodo);
       localStorage.setItem("todos", JSON.stringify(todos));
       updateCalendar();
       clearInputFields();
       updateTodoList();
+      const todoElement = createTodoElement(newTodo);
+      document.getElementById("todoList").appendChild(todoElement);
+   }
 
-      // Change the textContent of the saveButton back to 'Save'
-      saveButton.textContent = "Save";
-    } else {
-      console.error("Todo not found for the given id:", editId);
-    }
-  } else {
-    // Creating a new todo
-    const newTodoId = getNextUniqueId();
-    const newTodo = { ...userInputData, id: newTodoId };
-
-    todos.push(newTodo);
-    localStorage.setItem("todos", JSON.stringify(todos));
-    updateCalendar();
-    clearInputFields();
-    updateTodoList();
-    const todoElement = createTodoElement(newTodo);
-    document.getElementById("todoList").appendChild(todoElement);
-  }
-
-  console.log(todos);
+   console.log(todos);
 }
+
+// Creates unique ID for each todo
+
+function getNextUniqueId() {
+   const existingTodo = todos.find((todo) => todo.id === todos.length + 1);
+   if (existingTodo) {
+      return existingTodo.id.toString();
+   }
+
+   return (todos.length + 1).toString();
+}
+
+// Delete from local storage based on ID and date
 
 function deleteTodo(date, todoId) {
-  const todoIndex = todos.findIndex(
-    (todoItem) => todoItem.date === date && todoItem.id === todoId
-  );
+   const todoIndex = todos.findIndex(
+      (todoItem) => todoItem.date === date && todoItem.id === todoId
+   );
 
-  if (todoIndex !== -1) {
-    todos.splice(todoIndex, 1);
-    localStorage.setItem("todos", JSON.stringify(todos));
-    updateCalendar();
+   if (todoIndex !== -1) {
+      todos.splice(todoIndex, 1);
+      localStorage.setItem("todos", JSON.stringify(todos));
+      updateCalendar();
 
-    clearTodoList();
+      clearTodoList();
 
-    const todosForSelectedDate = todos.filter(
-      (todoItem) => todoItem.date === date
-    );
-    todosForSelectedDate.forEach((todoItem) => {
-      const todoElement = createTodoElement(todoItem);
-      document.getElementById("todoList").appendChild(todoElement);
-    });
-  } else {
-    console.error("Todo not found for the given date and id:", date, todoId);
-  }
-}
-function storeTodo(callback) {
-  if (todos && Array.isArray(todos)) {
-    const hasNonEmptyTodo = todos.some(
-      (item) =>
-        item.date !== "" ||
-        item.time !== "" ||
-        item.title !== "" ||
-        item.textarea !== ""
-    );
-
-    let todoString = JSON.stringify(todos);
-    localStorage.setItem("todos", todoString);
-
-    if (callback && typeof callback === "function") {
-      callback();
-    }
-  } else {
-    console.error("Invalid or uninitialized todos");
-  }
+      const todosForSelectedDate = todos.filter(
+         (todoItem) => todoItem.date === date
+      );
+      todosForSelectedDate.forEach((todoItem) => {
+         const todoElement = createTodoElement(todoItem);
+         document.getElementById("todoList").appendChild(todoElement);
+      });
+   } else {
+      console.error("Todo not found for the given date and id:", date, todoId);
+   }
 }
 
 function clearTodoList() {
-  const todoListElement = document.getElementById("todoList");
+   const todoListElement = document.getElementById("todoList");
 
-  while (todoListElement.firstChild) {
-    todoListElement.removeChild(todoListElement.firstChild);
-  }
+   while (todoListElement.firstChild) {
+      todoListElement.removeChild(todoListElement.firstChild);
+   }
 }
+
+// Select the elements and clear values after saving or updating todos
 
 function clearInputFields() {
-  const dateInputField = document.getElementById("dateInputField");
-  const timeInputField = document.getElementById("timeInputField");
-  const titleInputField = document.getElementById("titleInputField");
-  const textareaInputField = document.getElementById("textareaInputField");
+   const dateInputField = document.getElementById("dateInputField");
+   const timeInputField = document.getElementById("timeInputField");
+   const titleInputField = document.getElementById("titleInputField");
+   const textareaInputField = document.getElementById("textareaInputField");
 
-  if (dateInputField) {
-    dateInputField.value = "";
-  } else {
-    console.error("dateInputField not found in the DOM");
-  }
+   if (dateInputField) {
+      dateInputField.value = "";
+   } else {
+      console.error("dateInputField not found in the DOM");
+   }
 
-  if (timeInputField) {
-    timeInputField.value = "";
-  } else {
-    console.error("timeInputField not found in the DOM");
-  }
+   if (timeInputField) {
+      timeInputField.value = "";
+   } else {
+      console.error("timeInputField not found in the DOM");
+   }
 
-  if (titleInputField) {
-    titleInputField.value = "";
-  } else {
-    console.error("titleInputField not found in the DOM");
-  }
+   if (titleInputField) {
+      titleInputField.value = "";
+   } else {
+      console.error("titleInputField not found in the DOM");
+   }
 
-  if (textareaInputField) {
-    textareaInputField.value = "";
-  } else {
-    console.error("textareaInputField not found in the DOM");
-  }
+   if (textareaInputField) {
+      textareaInputField.value = "";
+   } else {
+      console.error("textareaInputField not found in the DOM");
+   }
 }
+
+// Filter todos based on selected date
 
 function updateTodoList(selectedDate) {
-  const todoListElement = document.getElementById("todoList");
-  todoListElement.innerHTML = "";
-  const existingTodos = todos.filter(
-    (todoItem) => todoItem.date === selectedDate
-  );
-  existingTodos.forEach((todoItem) => {
-    const injectTodo = createTodoElement(todoItem, todoItem.id);
-    todoListElement.appendChild(injectTodo);
-  });
+   const todoListElement = document.getElementById("todoList");
+   todoListElement.innerHTML = "";
+   const existingTodos = todos.filter(
+      (todoItem) => todoItem.date === selectedDate
+   );
+   existingTodos.forEach((todoItem) => {
+      const injectTodo = createTodoElement(todoItem, todoItem.id);
+      todoListElement.appendChild(injectTodo);
+   });
 }
 
-function findTodoById(todoItemId) {
-  function findTodo(todoList) {
-    for (const todo of todoList) {
-      if (todo.id === todoItemId) {
-        return todo;
-      } else if (todo.todos && Array.isArray(todo.todos)) {
-        const nestedTodo = findTodo(todo.todos);
-        if (nestedTodo) {
-          return nestedTodo;
-        }
-      }
-    }
-    return null;
-  }
-
-  return findTodo(todos);
-}
+// Toggle behavior: if the same day is clicked again, show todos for the current day. If no specific day clicked, display the current day´s todos
 
 let lastClickedDay = null;
 
 function selectDayTodo(event) {
-  const selectedDayElement = event.target.closest(".day");
-  const activitiesDate = document.getElementById("activities");
-  //if (!selectedDayElement) return;
+   const selectedDayElement = event.target.closest(".day");
+   const activitiesDate = document.getElementById("activities");
 
-  let selectedDate;
+   let selectedDate;
 
-  if (selectedDayElement) {
-    const selectedDayId = selectedDayElement.id;
-    const selectedDayNumber = parseInt(selectedDayId.replace("day", ""), 10);
+   if (selectedDayElement) {
+      const selectedDayId = selectedDayElement.id;
+      const selectedDayNumber = parseInt(selectedDayId.replace("day", ""), 10);
 
-    const selectedMonth = currentMonth;
-    const selectedYear = currentYear;
+      const selectedMonth = currentMonth;
+      const selectedYear = currentYear;
 
-    selectedDate = `${selectedYear}-${(selectedMonth + 1)
-      .toString()
-      .padStart(2, "0")}-${selectedDayNumber.toString().padStart(2, "0")}`;
+      selectedDate = `${selectedYear}-${(selectedMonth + 1)
+         .toString()
+         .padStart(2, "0")}-${selectedDayNumber.toString().padStart(2, "0")}`;
 
-    // Toggle behavior: if the same day is clicked again, show todos for the current day
-    if (selectedDate === lastClickedDay) {
+      if (selectedDate === lastClickedDay) {
+         selectedDate = new Date().toISOString().split("T")[0];
+         lastClickedDay = null;
+      } else {
+         lastClickedDay = selectedDate;
+      }
+   } else {
       selectedDate = new Date().toISOString().split("T")[0];
       lastClickedDay = null;
-    } else {
-      lastClickedDay = selectedDate;
-    }
-  } else {
-    // No specific day clicked, use current day
-    selectedDate = new Date().toISOString().split("T")[0];
-    lastClickedDay = null;
-  }
+   }
 
-  const dateInputField = document.getElementById("dateInputField");
+   const dateInputField = document.getElementById("dateInputField");
 
-  dateInputField.value = "";
-  //dateInputField.value = selectedDate;
+   dateInputField.value = "";
 
-  activitiesDate.textContent = `Actitivities for: ${selectedDate}`;
+   activitiesDate.textContent = `Actitivities for: ${selectedDate}`;
 
-  clearTodoList();
+   clearTodoList();
 
-  updateCalendar();
+   updateCalendar();
 
-  const todosForSelectedDate = todos.filter(
-    (todoItem) => todoItem.date === selectedDate
-  );
-  if (todosForSelectedDate.length > 0) {
-    todosForSelectedDate.forEach((todoItem) => {
-      const injectTodo = createTodoElement(todoItem, todoItem.id);
-      document.getElementById("todoList").appendChild(injectTodo);
-    });
-  } else {
-    updateTodoList(selectedDate);
-  }
+   const todosForSelectedDate = todos.filter(
+      (todoItem) => todoItem.date === selectedDate
+   );
+   if (todosForSelectedDate.length > 0) {
+      todosForSelectedDate.forEach((todoItem) => {
+         const injectTodo = createTodoElement(todoItem, todoItem.id);
+         document.getElementById("todoList").appendChild(injectTodo);
+      });
+   } else {
+      updateTodoList(selectedDate);
+   }
 
-  console.log(todos);
-}
-
-function getNextUniqueId() {
-  const existingTodo = todos.find((todo) => todo.id === todos.length + 1);
-  if (existingTodo) {
-    return existingTodo.id.toString();
-  }
-
-  return (todos.length + 1).toString();
+   console.log(todos);
 }

@@ -8,9 +8,12 @@ let options = {
 function startClock() {
   setInterval(tick, 1000);
 }
+
+// Updates calendar every second
+
 function tick() {
   defaultDate();
-  // updateCalendar();
+
   const currentDate = new Date();
   const currentTimeElement = document.querySelector(".btn-clock");
   const hours = currentDate.getHours().toString().padStart(2, "0");
