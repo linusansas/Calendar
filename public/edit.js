@@ -1,24 +1,21 @@
 function allowUserEdit(todoData) {
   const dateInputField = document.getElementById("dateInputField");
-  const timeInputField = document.getElementById("timeInputField");
-  const titleInputField = document.getElementById("titleInputField");
-  const textareaInputField = document.getElementById("textareaInputField");
-  const saveButton = document.getElementById("saveButton");
-
-  if (
-    dateInputField &&
-    timeInputField &&
-    titleInputField &&
-    textareaInputField &&
-    saveButton
-  ) {
+  const editButton = document.getElementById("editButton");
+  saveButton = document.getElementById("saveButton");
+  if (editButton && saveButton) {
     dateInputField.value = todoData.date;
-    timeInputField.value = todoData.time;
-    titleInputField.value = todoData.title;
-    textareaInputField.value = todoData.textarea;
+    document.getElementById("timeInputField").value = todoData.time;
+    document.getElementById("titleInputField").value = todoData.title;
+    document.getElementById("textareaInputField").value = todoData.textarea;
 
     saveButton.textContent = "Update";
 
-    saveButton.setAttribute("data-edit-id", todoData.id);
+    editButton.setAttribute("data-edit-id", todoData.id);
+
+    const editId = editButton.getAttribute("data-edit-id");
+
+    const editingTodoIndex = todos.findIndex(
+      (todoItem) => todoItem.id === editId
+    );
   }
 }
