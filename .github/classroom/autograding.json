@@ -3,7 +3,7 @@
     {
       "name": "Krav G",
       "setup": "npm install",
-      "run": "npm test -- --run",
+      "run": "npm test -- --run .g.",
       "input": "",
       "output": "",
       "comparison": "exact",
