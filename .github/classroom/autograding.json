@@ -2,7 +2,7 @@
   "tests": [
     {
       "name": "Krav G",
-      "setup": "exit 1 && npm install",
+      "setup": "npm install",
       "run": "npm test -- --run",
       "input": "",
       "output": "",
